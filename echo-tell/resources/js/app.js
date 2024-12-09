@@ -16,9 +16,14 @@ import { createApp } from 'vue';
 const app = createApp({});
 
 import HeaderComponent from './components/HeaderComponent.vue';
-import HomeComponent from './components/HomeComponent.vue';
+import WelcomePage from './pages/WelcomePage.vue';
+import AuthPage from './pages/AuthPage.vue';
+import RegistrationPage from './pages/RegistrationPage.vue';
+
 app.component('header-component', HeaderComponent);
-app.component('home-component', HomeComponent);
+app.component('welcome-page', WelcomePage);
+app.component('auth-page', AuthPage) 
+app.component('registration-page', RegistrationPage) 
 
 /**
  * The following block of code may be used to automatically register your

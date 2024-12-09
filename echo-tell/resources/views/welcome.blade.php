@@ -11,7 +11,7 @@
 <body>
     <div id="app">
         <!-- <header-component></header-component> -->
-        <home-component></home-component>
+        <welcome-page></welcome-page>
     </div>
 
 </body>
