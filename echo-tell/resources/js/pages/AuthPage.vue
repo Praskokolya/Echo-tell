@@ -1,8 +1,9 @@
 <template>
     <div class="auth-container">
         <div class="auth-form">
+            <h1 class="form-title main-title">Echo Tell</h1>
             <h2 class="form-title">Log In to Your Account</h2>
-            <form @submit.prevent="submitForm">
+            <form>
                 <div class="form-group">
                     <label for="email">Email Address</label>
                     <input v-model="form.email" type="email" id="email" required placeholder="Enter your email" />
@@ -63,6 +64,14 @@ export default {
 </script>
 
 <style scoped>
+
+.main-title {
+    font-size: 30rem;
+    font-weight: bold;
+    color: #4A90E2;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
 .auth-container {
     display: flex;
     justify-content: center;

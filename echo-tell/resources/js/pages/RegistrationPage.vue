@@ -28,6 +28,11 @@
                 <div class="form-group">
                     <button type="submit" @click="sendData" class="submit-btn">Register</button>
                 </div>
+                <div class="form-footer">
+                    <p>
+                        Or <a href="/auth" class="link-to-login">Sign in to an existing account</a>
+                    </p>
+                </div>
             </form>
         </div>
     </div>
@@ -36,7 +41,7 @@
 <script>
 import axios from 'axios';
 export default {
-    
+
     data() {
         return {
             form: {
@@ -54,14 +59,34 @@ export default {
                 return;
             }
         },
-        sendData(){
-            axios.post('./registration/create',this.form);
+        sendData() {
+            axios.post('./registration/create', this.form);
         }
     }
 };
 </script>
 
 <style scoped>
+.form-footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.form-footer p {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.form-footer a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+}
+
 .registration-form-container {
     display: flex;
     justify-content: center;
