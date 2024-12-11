@@ -15,14 +15,16 @@
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input v-model="form.password" type="password" id="password" required
+                    <input @input="passwordStatus = false" v-model="form.password" type="password" id="password" required
                         placeholder="Enter your password" />
                 </div>
 
                 <div class="form-group">
                     <label for="confirm-password">Confirm Password</label>
-                    <input v-model="form.confirmPassword" type="password" id="confirm-password" required
+                    <input @input="passwordStatus = false" v-model="form.confirmPassword" type="password" id="confirm-password" required
                         placeholder="Confirm your password" />
+                    <div :style="passwordDontMatch" class="error-message" v-show="passwordStatus">Passwords dont match</div>
+
                 </div>
 
                 <div class="form-group">
@@ -49,13 +51,14 @@ export default {
                 email: '',
                 password: '',
                 confirmPassword: ''
-            }
+            },
+            passwordStatus: false
         };
     },
     methods: {
         submitForm() {
             if (this.form.password !== this.form.confirmPassword) {
-                alert('Passwords do not match!');
+                this.passwordStatus = true
                 return;
             }
         },
@@ -94,7 +97,9 @@ export default {
     min-height: 100vh;
     background-color: #f0f2f5;
 }
-
+.error-message{
+    color: red;
+}
 .registration-form {
     width: 500px;
     padding: 20px;
