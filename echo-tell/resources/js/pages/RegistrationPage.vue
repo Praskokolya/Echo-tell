@@ -50,7 +50,6 @@ export default {
                 name: '',
                 email: '',
                 password: '',
-                confirmPassword: ''
             },
             passwordStatus: false
         };
@@ -63,7 +62,7 @@ export default {
             }
         },
         sendData() {
-            axios.post('./registration/create', this.form);
+            axios.post('./registration/create', this.form)
         }
     }
 };
