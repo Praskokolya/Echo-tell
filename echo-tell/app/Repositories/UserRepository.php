@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Jobs\SendEmailJob;
 use App\Models\User;
 use App\Services\MailService;
 use Auth;
@@ -15,8 +16,6 @@ class UserRepository
         $this->user = $user;
     }
     public function create(array $userData){
-
-        $registredUser = $this->user->create($userData);
-        Auth::login($registredUser);
+        
     }
 }

@@ -8,8 +8,9 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
 
-class EchoMail extends Mailable
+class SendCodeMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -37,7 +38,10 @@ class EchoMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'welcome',
+            view: 'mail-code',
+            with: [
+                'code' => Cache::get('code')
+            ]
         );
     }
 

@@ -62,7 +62,9 @@ export default {
             }
         },
         sendData() {
-            axios.post('./registration/create', this.form)
+            // axios.post('auth/registration/store', this.form)
+            
+            window.location.href = '../auth/registration/confirm'
         }
     }
 };
