@@ -6,6 +6,7 @@
                 <div class="form-group">
                     <label for="name">Full Name</label>
                     <input v-model="form.name" type="text" id="name" required placeholder="Enter your full name" />
+
                 </div>
 
                 <div class="form-group">
@@ -15,20 +16,21 @@
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input @input="passwordStatus = false" v-model="form.password" type="password" id="password" required
-                        placeholder="Enter your password" />
+                    <input @input="passwordStatus = false" v-model="form.password" type="password" id="password"
+                        required placeholder="Enter your password" />
                 </div>
 
                 <div class="form-group">
                     <label for="confirm-password">Confirm Password</label>
-                    <input @input="passwordStatus = false" v-model="form.confirmPassword" type="password" id="confirm-password" required
-                        placeholder="Confirm your password" />
-                    <div :style="passwordDontMatch" class="error-message" v-show="passwordStatus">Passwords dont match</div>
+                    <input @input="passwordStatus = false" v-model="form.confirmPassword" type="password"
+                        id="confirm-password" required placeholder="Confirm your password" />
+                    <div :style="passwordDontMatch" class="error-message" v-show="passwordStatus">{{ this.errorMessage
+                        }}</div>
 
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" @click="sendData" class="submit-btn">Register</button>
+                    <button type="submit" @click="submitForm" class="submit-btn">Register</button>
                 </div>
                 <div class="form-footer">
                     <p>
@@ -51,6 +53,7 @@ export default {
                 email: '',
                 password: '',
             },
+            errorMessage: '',
             passwordStatus: false
         };
     },
@@ -58,13 +61,22 @@ export default {
         submitForm() {
             if (this.form.password !== this.form.confirmPassword) {
                 this.passwordStatus = true
+                this.errorMessage = 'Passwords do not match'
                 return;
             }
+            this.sendData();
+
         },
         sendData() {
-            // axios.post('auth/registration/store', this.form)
-            
-            window.location.href = '../auth/registration/confirm'
+            axios.post('/auth/registration/store', this.form)
+                .then(response =>{
+                    window.location.href = '/auth/registration/confirm';
+                })
+                .catch(error => {
+                    this.passwordStatus = true
+                    this.errorMessage = error.response?.data?.message
+                    console.log(this.errorStatus)
+                })
         }
     }
 };
@@ -88,7 +100,7 @@ export default {
 }
 
 .form-footer a:hover {
-    text-decoration: underline;
+    text-decoration: underldine;
 }
 
 .registration-form-container {
@@ -98,9 +110,11 @@ export default {
     min-height: 100vh;
     background-color: #f0f2f5;
 }
-.error-message{
+
+.error-message {
     color: red;
 }
+
 .registration-form {
     width: 500px;
     padding: 20px;

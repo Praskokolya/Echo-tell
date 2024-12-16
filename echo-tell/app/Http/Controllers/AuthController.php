@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AuthRequest;
 use App\Jobs\TestJob;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
@@ -25,8 +26,7 @@ class AuthController extends Controller
     public function registation()   {
         return view('auth.registation');
     } 
-    public function store(Request $request){
+    public function store(AuthRequest $request){
         $this->userService->storeUserData($request->all());
-        return redirect()->route('verify.form');
     }
 }

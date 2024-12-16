@@ -16,8 +16,8 @@ class UserService
 
     public function storeUserData(array $userData){
         
-        Session::put("user_array", $userData);
-        $this->sendUserCode($userData['email']);
+        // Session::put("user_array", $userData);
+        // $this->sendUserCode($userData['email']);
     }
 
     protected function sendUserCode($mail){
