@@ -53,7 +53,7 @@ export default {
     },
     methods: {
         logIn(){
-            console.log(this.form);
+            axios.post('auth/login', this.form);
         },
         signInWithGoogle() {
         },

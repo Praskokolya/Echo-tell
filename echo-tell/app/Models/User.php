@@ -41,7 +41,7 @@ class User extends Authenticatable
 
     // User model mutator
 
-    // public function setPasswordAttribute($value){
-    //     // dd($value);
-    // }
+    public function setPasswordAttribute($value){
+        $this->attributes['password'] = bcrypt($value);
+    }
 }

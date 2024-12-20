@@ -6,7 +6,6 @@
                 <div class="form-group">
                     <label for="name">Full Name</label>
                     <input v-model="form.name" type="text" id="name" required placeholder="Enter your full name" />
-
                 </div>
 
                 <div class="form-group">
@@ -16,21 +15,33 @@
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input @input="passwordStatus = false" v-model="form.password" type="password" id="password"
-                        required placeholder="Enter your password" />
+                    <input
+                        @input="passwordStatus = false"
+                        v-model="form.password"
+                        type="password"
+                        id="password"
+                        required
+                        placeholder="Enter your password"
+                    />
                 </div>
 
                 <div class="form-group">
                     <label for="confirm-password">Confirm Password</label>
-                    <input @input="passwordStatus = false" v-model="form.confirmPassword" type="password"
-                        id="confirm-password" required placeholder="Confirm your password" />
-                    <div :style="passwordDontMatch" class="error-message" v-show="passwordStatus">{{ this.errorMessage
-                        }}</div>
-
+                    <input
+                        @input="passwordStatus = false"
+                        v-model="form.confirmPassword"
+                        type="password"
+                        id="confirm-password"
+                        required
+                        placeholder="Confirm your password"
+                    />
+                    <div :style="passwordDontMatch" class="error-message" v-show="passwordStatus">
+                        {{ this.errorMessage }}
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" @click="submitForm" class="submit-btn">Register</button>
+                    <button type="submit" class="submit-btn">Register</button>
                 </div>
                 <div class="form-footer">
                     <p>
@@ -43,53 +54,135 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 export default {
-
     data() {
         return {
             form: {
-                name: '',
-                email: '',
-                password: '',
+                name: "",
+                email: "",
+                password: "",
             },
-            errorMessage: '',
-            passwordStatus: false
+            errorMessage: "",
+            passwordStatus: false,
         };
     },
     methods: {
         submitForm() {
             if (this.form.password !== this.form.confirmPassword) {
-                this.passwordStatus = true
-                this.errorMessage = 'Passwords do not match'
+                this.passwordStatus = true;
+                this.errorMessage = "Passwords do not match";
                 return;
             }
             this.sendData();
-
         },
         sendData() {
-            axios.post('/auth/registration/store', this.form)
-                .then(response =>{
-                    window.location.href = '/auth/registration/confirm';
+            axios
+                .post("/auth/registration/store", this.form)
+                .then((response) => {
+                    window.location.href = "/auth/registration/confirm";
                 })
-                .catch(error => {
-                    this.passwordStatus = true
-                    this.errorMessage = error.response?.data?.message
-                    console.log(this.errorStatus)
-                })
-        }
-    }
+                .catch((error) => {
+                    this.passwordStatus = true;
+                    this.errorMessage = error.response?.data?.message;
+                });
+        },
+    },
 };
 </script>
 
 <style scoped>
-.form-footer {
-    margin-top: 20px;
+/* Container */
+.registration-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Card */
+.registration-form {
+    width: 450px;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Title */
+h2 {
     text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #6a11cb;
+    box-shadow: 0 0 10px rgba(106, 17, 203, 0.2);
+}
+
+/* Error Message */
+.error-message {
+    font-size: 13px;
+    color: #e74c3c;
+    margin-top: 5px;
+}
+
+/* Button */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+.submit-btn:hover {
+    background: linear-gradient(135deg, #5a0fb5, #1e5dbc);
+    box-shadow: 0 4px 15px rgba(90, 15, 181, 0.4);
+}
+
+/* Footer */
+.form-footer {
+    text-align: center;
+    margin-top: 15px;
 }
 
 .form-footer p {
-    font-size: 0.9rem;
+    font-size: 14px;
     color: #7f8c8d;
 }
 
@@ -100,72 +193,18 @@ export default {
 }
 
 .form-footer a:hover {
-    text-decoration: underldine;
+    text-decoration: underline;
 }
 
-.registration-form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f0f2f5;
-}
-
-.error-message {
-    color: red;
-}
-
-.registration-form {
-    width: 500px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-label {
-    font-size: 14px;
-    color: #333;
-    display: block;
-    margin-bottom: 8px;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #fff;
-}
-
-input:focus {
-    outline: none;
-    border-color: #007bff;
-}
-
-.submit-btn {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.submit-btn:hover {
-    background-color: #0056b3;
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 </style>
