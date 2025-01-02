@@ -13,7 +13,7 @@ class UserValidationTest extends TestCase
     /**
      * A basic feature test example.
      */
-    public function test_how_request_validating_data(): void
+    public function test_how_request_validating_data()
     {
         $data = [
             'name' => Str::random(10),
@@ -25,6 +25,6 @@ class UserValidationTest extends TestCase
             'X-CSRF-TOKEN' => csrf_token(),
         ])->post('/auth/registration/store', $data);
 
-        dd($response->getStatusCode());
+        // dd($response->getStatusCode());
     }
 }

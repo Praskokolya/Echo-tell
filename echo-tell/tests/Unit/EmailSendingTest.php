@@ -9,7 +9,7 @@ use Illuminate\Bus\UpdatedBatchJobCounts;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Queue;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class EmailSendingTest extends TestCase

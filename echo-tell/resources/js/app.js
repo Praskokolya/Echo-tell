@@ -19,12 +19,12 @@ import HeaderComponent from './components/HeaderComponent.vue';
 import WelcomePage from './pages/WelcomePage.vue';
 import AuthPage from './pages/AuthPage.vue';
 import RegistrationPage from './pages/RegistrationPage.vue';
-
+import HomePage from './pages/home/HomePage.vue';
 app.component('header-component', HeaderComponent);
 app.component('welcome-page', WelcomePage);
 app.component('auth-page', AuthPage) 
 app.component('registration-page', RegistrationPage) 
-
+app.component('home-page', HomePage)
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

@@ -2,12 +2,11 @@
 
 namespace App\Console\Commands;
 
-use File;
+use Illuminate\Support\Facades\File;
 use Illuminate\Console\Command;
 
 class CreateRepository extends Command
 {
-    // Визначаємо константу для шляху до шаблону
     const TEMPLATE_PATH = 'Console/FileTemplates/RepositoryTemplate';
 
     /**

@@ -16,7 +16,12 @@ if (csrfTokenMeta) {
 } else {
     console.error('CSRF token meta tag not found!');
 }
-
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
+const accessToken = localStorage.getItem('access_token');
+if (accessToken) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+}
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
