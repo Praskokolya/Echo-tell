@@ -33,7 +33,6 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-  
     /**
      * Get the attributes that should be cast.
      *
@@ -44,5 +43,10 @@ class User extends Authenticatable
 
     public function setPasswordAttribute($value){
         $this->attributes['password'] = bcrypt($value);
+    }
+
+    // User relationship with questions 
+    public function questions(){
+        return $this->hasMany(QuestionsModel::class);
     }
 }

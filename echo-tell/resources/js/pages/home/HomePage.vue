@@ -3,12 +3,15 @@
         <!-- Create Question Page -->
         <div class="create-question-page">
             <div class="header text-center">
-                <h1 class="display-3">Create Your Anonymous Question</h1>
-                <p class="lead">Ask your question anonymously.</p>
+                <h1 class="display-3">Create Your Question</h1>
+                <h2 class="form-title">
+                    So that others can respond anonymously
+                </h2>
             </div>
 
             <div class="form-container text-center">
-                <h2 class="form-title">Ask Your Question</h2>
+                <p class="display-3">Time to hear the truth!</p>
+
                 <form @submit.prevent="submitQuestion">
                     <div class="form-group">
                         <textarea
@@ -47,7 +50,7 @@ export default {
                 axios
                     .post("/api/create", { question: this.question })
                     .then((response) => {
-                        console.log(response.data);
+                        window.location.href = response.data.data.question_url;
                     });
             }
         },

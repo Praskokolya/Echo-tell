@@ -73,10 +73,11 @@ export default {
     },
     methods: {
         logIn() {
-            axios.post("/api/auth/login", this.form).then((response) => {
+            axios.post("/auth/login", this.form).then((response) => {
                 if(response.data.access_token){
                     console.log('Bearer ' + response.data.access_token);
                     localStorage.setItem("access_token", response.data.access_token);
+                    window.location.href = "/";
                 } 
             });
         },

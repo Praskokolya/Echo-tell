@@ -11,16 +11,15 @@ Route::get('/', function () {
 });
 // Auth routes
 // Auth::routes();
-Route::controller(AuthController::class)->group(function(){
-    Route::get('auth','index');
-    Route::get('auth/registration','registation')->name('registration');
-    Route::post('auth/registration/store','store');
-    Route::get('auth/registration/confirm',function(){
+Route::controller(AuthController::class)->group(function () {
+    Route::get('auth', 'index');
+    Route::get('auth/registration', 'registation')->name('registration');
+    Route::post('auth/login', [AuthController::class, 'login'])->name('login');
+    Route::post('auth/registration/store', 'store');
+    Route::get('auth/registration/confirm', function () {
         return view('verify-form');
     })->name('verify.form');
     Route::post('auth/registration/confirm/code', 'passVerificationCode')->name('pass.code');
-
 });
-Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::get('home', [HomePageController::class, 'index'])->name('home');
-});
+Route::get('question/{id}/{slug}', [HomePageController::class, 'show']);
+Route::get('home', [HomePageController::class, 'index'])->name('home');
