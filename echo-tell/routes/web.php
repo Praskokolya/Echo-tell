@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\QuestionContoller;
+use App\Http\Controllers\ResponseController;
 use App\Mail\EchoMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -21,5 +23,8 @@ Route::controller(AuthController::class)->group(function () {
     })->name('verify.form');
     Route::post('auth/registration/confirm/code', 'passVerificationCode')->name('pass.code');
 });
-Route::get('question/{id}/{slug}', [HomePageController::class, 'show']);
 Route::get('home', [HomePageController::class, 'index'])->name('home');
+Route::prefix('question')->group(function(){
+    Route::get('/{id}/{slug}', [QuestionContoller::class, 'show']);
+});
+Route::get('user/responses', [ResponseController::class, 'index']);

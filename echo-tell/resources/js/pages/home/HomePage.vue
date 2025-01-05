@@ -48,9 +48,9 @@ export default {
                 return;
             } else {
                 axios
-                    .post("/api/create", { question: this.question })
+                    .post("/api/question", { question: this.question })
                     .then((response) => {
-                        window.location.href = response.data.data.question_url;
+                        window.location.href = response.data.question_url;
                     });
             }
         },

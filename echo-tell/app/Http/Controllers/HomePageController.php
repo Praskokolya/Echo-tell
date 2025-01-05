@@ -17,12 +17,5 @@ class HomePageController extends Controller
     {
         return view('home.home-page');
     }
-    public function createQuestion(Request $request)
-    {
-        $question = $this->questionRepository->createQuestion($request->all());
-        return new QuestionResource($question);
-    }
-    public function show($id){
-        dd($this->questionRepository->getQuestion($id));
-    }
+
 }

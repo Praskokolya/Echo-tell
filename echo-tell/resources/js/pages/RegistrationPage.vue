@@ -5,12 +5,24 @@
             <form @submit.prevent="submitForm" class="form">
                 <div class="form-group">
                     <label for="name">Full Name</label>
-                    <input v-model="form.name" type="text" id="name" required placeholder="Enter your full name" />
+                    <input
+                        v-model="form.name"
+                        type="text"
+                        id="name"
+                        required
+                        placeholder="Enter your full name"
+                    />
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input v-model="form.email" type="email" id="email" required placeholder="Enter your email" />
+                    <input
+                        v-model="form.email"
+                        type="email"
+                        id="email"
+                        required
+                        placeholder="Enter your email"
+                    />
                 </div>
 
                 <div class="form-group">
@@ -35,7 +47,11 @@
                         required
                         placeholder="Confirm your password"
                     />
-                    <div :style="passwordDontMatch" class="error-message" v-show="passwordStatus">
+                    <div
+                        :style="passwordDontMatch"
+                        class="error-message"
+                        v-show="passwordStatus"
+                    >
                         {{ this.errorMessage }}
                     </div>
                 </div>
@@ -45,7 +61,10 @@
                 </div>
                 <div class="form-footer">
                     <p>
-                        Or <a href="/auth" class="link-to-login">Sign in to an existing account</a>
+                        Or
+                        <a href="/auth" class="link-to-login"
+                            >Sign in to an existing account</a
+                        >
                     </p>
                 </div>
             </form>
@@ -92,17 +111,15 @@ export default {
 </script>
 
 <style scoped>
-/* Container */
 .registration-form-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     background: linear-gradient(135deg, #6a11cb, #2575fc);
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
 }
 
-/* Card */
 .registration-form {
     width: 450px;
     padding: 30px;
@@ -112,7 +129,6 @@ export default {
     animation: fadeIn 0.8s ease-in-out;
 }
 
-/* Title */
 h2 {
     text-align: center;
     color: #333;
@@ -121,7 +137,6 @@ h2 {
     font-weight: 600;
 }
 
-/* Form Group */
 .form-group {
     margin-bottom: 20px;
 }
@@ -149,14 +164,12 @@ input:focus {
     box-shadow: 0 0 10px rgba(106, 17, 203, 0.2);
 }
 
-/* Error Message */
 .error-message {
     font-size: 13px;
     color: #e74c3c;
     margin-top: 5px;
 }
 
-/* Button */
 .submit-btn {
     width: 100%;
     padding: 12px;
@@ -175,7 +188,6 @@ input:focus {
     box-shadow: 0 4px 15px rgba(90, 15, 181, 0.4);
 }
 
-/* Footer */
 .form-footer {
     text-align: center;
     margin-top: 15px;
@@ -196,7 +208,6 @@ input:focus {
     text-decoration: underline;
 }
 
-/* Animation */
 @keyframes fadeIn {
     from {
         opacity: 0;
