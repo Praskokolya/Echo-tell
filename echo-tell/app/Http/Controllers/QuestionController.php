@@ -2,21 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\QuestionCollection;
 use App\Http\Resources\QuestionResource;
-use App\Http\Resources\ResponseResource;
+use App\Http\Resources\QuestionsResource;
 use App\Repositories\QuestionRepository;
-use App\Repositories\ResponseRepository;
 use Illuminate\Http\Request;
 
-class QuestionContoller extends Controller
+class QuestionController extends Controller
 {
     public function __construct(
         public QuestionRepository $questionRepository,
-        public ResponseRepository $responseRepository
     ) {}
-    public function show()
+
+    public function createQuestion()
+    {
+        return view('question.create-question');
+    }
+
+    public function index()
     {
         return view('question');
+    }
+    
+    public function questions(){
+        return view('question.questions');
     }
 
     // Creating question and returning the question url
@@ -33,5 +42,9 @@ class QuestionContoller extends Controller
     {
         $question = $this->questionRepository->getQuestion($id);
         return new QuestionResource($question);
+    }
+
+    public function returnQuestions(){
+        return QuestionsResource::collection($this->questionRepository->getAll());
     }
 }

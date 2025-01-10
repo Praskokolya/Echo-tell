@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ResponseModel extends Model
 {
+    use HasFactory;
+    
     protected $table = 'responses';
     protected $fillable = [
         'response',
@@ -14,6 +17,15 @@ class ResponseModel extends Model
         'user_name',
         'name_visibility'
     ];
+     
+    public function setUserNameAttribute($value){
+        if($this->name_visibility == 0){
+            $this->attributes['user_name'] = 'Anonymous';
+        }else{
+            $this->attributes['user_name'] = $value;
+
+        }
+    }
 
     public function user(){
         return $this->belongsTo(User::class);

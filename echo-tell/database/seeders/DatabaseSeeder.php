@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\ResponseModel;
 use App\Models\User;
+use Database\Factories\ResponseFactory;
+use GuzzleHttp\Psr7\Response;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,8 +16,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        $this->call([
+            ResponseSeeder::class,
+        ]);
         User::factory()->count(1)->create();
     }
 }

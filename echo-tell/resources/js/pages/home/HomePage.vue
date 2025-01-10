@@ -16,7 +16,7 @@
                     <div class="form-group">
                         <textarea
                             v-model="question"
-                            placeholder="Ask your question anonymously..."
+                            placeholder="Honestly it's..."
                             :maxlength="200"
                             rows="4"
                             required
@@ -64,24 +64,26 @@ export default {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(135deg, #00b894, #00d75b, #55efc4, #3c9e5f);
-    color: #fff;
+    background: #f9f9f9;
+    color: #333;
     font-family: "Poppins", sans-serif;
+    padding: 20px;
 }
 
 .create-question-page {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: #fff;
     border-radius: 15px;
     padding: 50px 30px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     max-width: 700px;
     width: 100%;
 }
 
 .header h1 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 600;
     margin-bottom: 20px;
+    color: #333;
 }
 
 .form-container {
@@ -89,9 +91,10 @@ export default {
 }
 
 .form-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 500;
     margin-bottom: 20px;
+    color: #555;
 }
 
 .form-group {
@@ -109,14 +112,16 @@ export default {
     resize: none;
     color: #333;
     transition: border-color 0.3s ease;
+    background-color: #fff;
 }
 
 .form-control:focus {
-    border-color: #2d6a4f;
+    border-color: #5e81ac;
+    box-shadow: 0 0 5px rgba(94, 129, 172, 0.3);
 }
 
 .btn-primary {
-    background-color: #ff7f50; /* Peach button color */
+    background-color: #5e81ac; /* Soft blue */
     color: #fff;
     border: none;
     padding: 12px 30px;
@@ -127,7 +132,7 @@ export default {
 }
 
 .btn-primary:hover {
-    background-color: #ff7043; /* Darker peach hover */
-    transform: translateY(-5px);
+    background-color: #4c6a92; /* Darker blue */
+    transform: translateY(-3px);
 }
 </style>

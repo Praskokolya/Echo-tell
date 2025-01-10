@@ -12,7 +12,9 @@ class QuestionsModel extends Model
         'user_id',
         'user_name'
     ];
+    
     protected $table = 'questions';
+
     protected $appends = ['url'];
 
     public function getUrlAttribute(){
@@ -23,6 +25,9 @@ class QuestionsModel extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
-
+    
+    public function responses(){
+        return $this->hasMany(ResponseModel::class, 'question_id');
+    }
     
 }

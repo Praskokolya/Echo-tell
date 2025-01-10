@@ -20,8 +20,10 @@ import WelcomePage from './pages/WelcomePage.vue';
 import AuthPage from './pages/AuthPage.vue';
 import RegistrationPage from './pages/RegistrationPage.vue';
 import HomePage from './pages/home/HomePage.vue';
-import QuestionPage from './pages/QuestionPage.vue';
+import QuestionPage from './pages/Questions/QuestionPage.vue';
 import ResponsesPage from './pages/ResponsesPage.vue';
+import AllQuestionsPage from './pages/Questions/AllQuestionsPage.vue';
+
 app.component('header-component', HeaderComponent);
 app.component('welcome-page', WelcomePage);
 app.component('auth-page', AuthPage) 
@@ -29,6 +31,26 @@ app.component('registration-page', RegistrationPage)
 app.component('home-page', HomePage)
 app.component('question-page', QuestionPage)
 app.component('responses-page', ResponsesPage)
+app.component('all-questions-page', AllQuestionsPage);
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+
+window.Pusher = Pusher;
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
+    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER, 
+    forceTLS: true,  
+    encrypted: true,
+});
+
+window.Echo.channel('notifications')
+    .listen('NewResponse', (data) => {
+        console.log(data.response);
+    })
+
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

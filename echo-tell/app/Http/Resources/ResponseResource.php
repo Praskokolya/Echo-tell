@@ -20,7 +20,7 @@ class ResponseResource extends JsonResource
             'response' => $this->response,
             'question_id' => $this->question_id,
             'user_id' => $this->user_id,
-            'user_name' => $this->name_visibility ? $this->user_name : 'Anonymous',
+            'user_name' => $this->user_name,
             'name_visibility' => $this->name_visibility,
             'created_at' => $this->created_at,
         ];

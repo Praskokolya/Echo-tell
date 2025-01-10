@@ -73,6 +73,7 @@ export default {
                 return;
             }else{
                 axios.post(`/api/response/${this.id}`, {response: this.response})
+                window.location.href = `/user/responses`;
             }
         },
         getQuestionData() {
@@ -113,8 +114,7 @@ export default {
 </script>
 
 <style scoped>
-/* From Uiverse.io by arghyaBiswasDev */
-/* The switch - the box around the slider */
+
 .switch {
     font-size: 17px;
     position: relative;
@@ -123,14 +123,12 @@ export default {
     height: 2em;
 }
 
-/* Hide default HTML checkbox */
 .switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
 
-/* The slider */
 .slider {
     position: absolute;
     cursor: pointer;

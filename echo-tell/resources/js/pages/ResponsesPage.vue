@@ -6,29 +6,15 @@
             class="response-card"
         >
             <div class="card-header">
-                <div class="user-info">
-                    <div class="avatar"></div>
-                    <div class="user-details">
-                        <h3>{{ response.user_name }}</h3>
-                        <p>
-                            <strong>Question ID:</strong>
-                            {{ response.question_id }}
-                        </p>
-                    </div>
-                </div>
                 <div class="name-visibility">
-                    <span
-                        :class="{
-                            hidden: response.name_visibility === 0,
-                            visible: response.name_visibility === 1,
-                        }"
-                    >
+                    <p>
+                        <strong>Name visibility:</strong>
                         {{
                             response.name_visibility === 0
                                 ? "Hidden"
                                 : "Visible"
                         }}
-                    </span>
+                    </p>
                 </div>
             </div>
             <div class="card-body">
@@ -94,15 +80,18 @@ export default {
             const responseToDelete = this.responses.find(
                 (response) => response.id === responseId
             );
-
             if (responseToDelete) {
                 axios
                     .delete(`/api/user/responses/${responseId}`)
-                    .then(() => {
-                        this.responses = this.responses.filter(
-                            (response) => response.id !== responseId
-                        );
-                    })
+                    .then((response) => {
+                        if (response.status === 200) {
+                            this.responses = this.responses.filter(
+                                (response) => response.id !== responseId
+                            );
+                        } else {
+                            console.error(response.status);
+                        }
+                    });
             }
         },
     },
@@ -130,6 +119,9 @@ export default {
     position: relative;
     cursor: pointer;
     border-left: 8px solid transparent;
+    display: flex;
+    flex-direction: column;
+    height: 350px; 
 }
 
 .response-card:hover {
@@ -152,49 +144,11 @@ export default {
     position: relative;
 }
 
-.card-header .user-info {
-    display: flex;
-    align-items: center;
-}
-
-.card-header .avatar {
-    width: 40px;
-    height: 40px;
-    background-color: #7f8c8d;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.card-header .user-details h3 {
-    margin: 0;
-    font-size: 1.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.card-header .user-details p {
-    font-size: 1rem;
-    font-weight: 300;
-}
-
-.card-header .name-visibility {
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-transform: capitalize;
-}
-
-.card-header .name-visibility .hidden {
-    color: #e74c3c;
-}
-
-.card-header .name-visibility .visible {
-    color: #2ecc71;
-}
-
 .card-body {
     padding: 20px 25px;
     color: #34495e;
     font-size: 1.1rem;
+    overflow-y: auto; 
 }
 
 .card-body p {
@@ -211,6 +165,9 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    flex-shrink: 0;
 }
 
 .card-footer .delete-btn {
