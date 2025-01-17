@@ -19,7 +19,7 @@ class NewResponseNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(public $userName)
+    public function __construct(public $responseData)
     {
     }
 
@@ -39,7 +39,9 @@ class NewResponseNotification extends Notification
     public function toDatabase()
     {
         return [
-            'message' => $this->userName . ' replied to your question',
+            'question_url' => $this->responseData->question->url,
+            'response_id' => $this->responseData->id,
+            'message' => $this->responseData->userName . ' replied to your question',
         ];
     }
 

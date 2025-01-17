@@ -27,6 +27,9 @@ class ResponseRepository
         ]);
     }
     public function deleteResponse($id){
-        dd($id);
+        $this->response->destroy($id);
+    }
+    public function getResponse($id){
+        return $this->response->with('question')->find($id);
     }
 }

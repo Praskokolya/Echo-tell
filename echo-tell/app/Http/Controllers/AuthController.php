@@ -6,8 +6,8 @@ use App\Http\Requests\AuthRequest;
 use App\Jobs\TestJob;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
-use App\Services\UserServiceService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use PHPUnit\Event\Code\TestMethodBuilder;
 
 class AuthController extends Controller
@@ -22,6 +22,7 @@ class AuthController extends Controller
     }
     public function index()
     {
+        $user = Auth::user();
         return view("auth.index");
     }
     public function registation()

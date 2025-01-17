@@ -15,6 +15,7 @@ class NewResponse implements ShouldBroadcast
 
     public function __construct(public $notification)
     {
+        
     }
 
     public function broadcastOn(): Channel

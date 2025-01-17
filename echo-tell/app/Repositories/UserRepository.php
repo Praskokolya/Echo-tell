@@ -28,7 +28,7 @@ class UserRepository
             ->first();
         if($user){
             Auth::login($user);
-            $token = $user->createToken('auth_token')->plainTextToken;
+            $token = $user->createToken('auth_token', ['admin'])->plainTextToken;
             return $token;
         }else{
             return false;

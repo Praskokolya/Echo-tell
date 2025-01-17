@@ -17,13 +17,12 @@ class ResponseModelFactory extends Factory
      */
     public function definition(): array
     {
-        $faker = Faker::create();
         return [
             'response' => fake()->text(),
-            'question_id' => 4,
-            'user_name' => fake()->name(),
-            'user_id' => 111,
-            'name_visibility' => 0,
+            'question_id' => 10,
+            'user_name' => 'dude',
+            'user_id' => 10,
+            'name_visibility' => 1,
         ];
     }
 }

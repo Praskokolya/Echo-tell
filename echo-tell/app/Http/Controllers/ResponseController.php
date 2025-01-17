@@ -30,4 +30,16 @@ class ResponseController extends Controller
     public function deleteResponse($id){
         $this->responseRepository->deleteResponse($id);
     }
+
+    public function responsePage($questionId, $slug, $responseId){
+        return view('response');
+    }
+
+    public function returnResponse($id){
+       $responseAndQuestion = $this->responseRepository->getResponse($id);
+       return response()->json([
+            'response' => new ResponseResource($responseAndQuestion),
+            'question' => new QuestionResource($responseAndQuestion->question),
+       ]);
+    }
 }

@@ -19,7 +19,7 @@ class ResponseObserver
         
     }
     
-    public function creating(ResponseModel $responseModel){
+    public function created(ResponseModel $responseModel){
         $this->notificationService->createUserNotification($responseModel);
     } 
 }

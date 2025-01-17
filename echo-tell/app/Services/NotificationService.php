@@ -17,8 +17,8 @@ class NotificationService
     public function createUserNotification($responseData)
     {
         $userForNotification = $this->notificationRepository->getUserForNotification($responseData->question_id);
-        $userForNotification->notify(new NewResponseNotification($responseData->user_name));
-        $lastResponses = $userForNotification->notifications->sortByDesc('created_at')->take(3);
+        $userForNotification->notify(new NewResponseNotification($responseData));
+        $lastResponses = $userForNotification->notifications->sortByDesc('created_at')->take(3)->pluck('data');
         broadcast(new NewResponse($lastResponses));
     }
 }

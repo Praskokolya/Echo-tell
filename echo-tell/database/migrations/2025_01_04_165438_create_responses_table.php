@@ -18,8 +18,7 @@ return new class extends Migration
             $table->string('user_name');
             $table->boolean('name_visibility')->default(false);
             $table->id();
-            $table->timestamps();
-            
+            $table->timestamps();  
         });
     }
 
