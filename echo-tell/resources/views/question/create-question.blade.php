@@ -10,7 +10,7 @@
 <body>
     <div id="app">
         <header-component></header-component> 
-        <home-page></home-page>
+        <create-question-page></create-question-page>
     </div>
 </body>
 </html>

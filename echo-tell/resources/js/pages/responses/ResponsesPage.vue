@@ -1,7 +1,7 @@
 <template>
     <div class="responses-container">
         <div
-            v-for="(response, index) in responses"
+            v-for="(item, index) in responses"
             :key="index"
             class="response-card"
         >
@@ -10,7 +10,7 @@
                     <p>
                         <strong>Name visibility:</strong>
                         {{
-                            response.name_visibility === 0
+                            item.name_visibility === 0
                                 ? "Hidden"
                                 : "Visible"
                         }}
@@ -18,85 +18,100 @@
                 </div>
             </div>
             <div class="card-body">
-                <p>
-                    <strong>Question:</strong>
-                    {{ getQuestionSnippet(response.question) }}
-                </p>
+                <div v-if="item.type === 'response'">
+                    <p>
+                        <strong>Question:</strong>
+                        {{ getQuestionSnippet(item.question) }}
+                    </p>
+                    <p><strong>Response:</strong> {{ item.response }}</p>
+                </div>
 
-                <p><strong>Response:</strong> {{ response.response }}</p>
+                <div v-else-if="item.type === 'message'">
+                    <p><strong>Message:</strong> {{ item.message }}</p>
+                    <p><strong>User:</strong> {{ item.user }}</p>
+                </div>
 
                 <div class="card-footer">
                     <button
                         class="delete-btn"
-                        @click="deleteResponse(response.id)"
+                        @click="deleteResponse(item.id)"
                     >
                         Delete
                     </button>
-                    <span class="time-ago">{{
-                        formatTime(response.created_at)
-                    }}</span>
+                    <span class="time-ago">{{ formatTime(item.created_at) }}</span>
                 </div>
             </div>
         </div>
     </div>
 </template>
 
+
+
 <script>
 export default {
     data() {
         return {
-            responses: [],
+            responses: [], // Містить як відповіді, так і повідомлення
         };
     },
     methods: {
-        getResponses() {
-            axios
-                .get("/api/user/responses")
-                .then((response) => {
-                    this.responses = response.data.data;
-                })
-                .catch((error) => {
-                    console.error("Error fetching responses:", error);
+    getResponses() {
+        axios
+            .get("/api/user/interactions")
+            .then((response) => {
+                // Перевіряємо кожен елемент на тип
+                this.responses = Object.values(response.data).map((item) => {
+                    // Якщо це повідомлення, додаємо користувача
+                    if (item.type === 'message') {
+                        item.user = item.user || "Anonymous";  // Якщо немає користувача, ставимо Anonymous
+                    } else if (item.type === 'response') {
+                        item.user = item.user_name || "Anonymous";  // Прив'язуємо user_name до user
+                    }
+                    return item;
                 });
-        },
-        formatTime(date) {
-            const timeAgo = new Date(date);
-            const now = new Date();
-            const diff = Math.floor((now - timeAgo) / (1000 * 60));
-            if (diff < 60) {
-                return `${diff} minutes ago`;
-            } else if (diff < 1440) {
-                return `${Math.floor(diff / 60)} hours ago`;
-            } else {
-                return `${Math.floor(diff / 1440)} days ago`;
-            }
-        },
-        getQuestionSnippet(question) {
-            return question.length > 200
-                ? question.slice(0, 200) + "..."
-                : question;
-        },
-        deleteResponse(responseId) {
-            const responseToDelete = this.responses.find(
-                (response) => response.id === responseId
-            );
-            if (responseToDelete) {
-                axios
-                    .delete(`/api/user/responses/${responseId}`)
-                    .then((response) => {
-                        if (response.status === 200) {
-                            this.responses = this.responses.filter(
-                                (response) => response.id !== responseId
-                            );
-                        } else {
-                            console.error(response.status);
-                        }
-                    });
-            }
-        },
+                console.log(this.responses);
+            })
+            .catch((error) => {
+                console.error("Error fetching responses:", error);
+            });
     },
+    formatTime(date) {
+        const timeAgo = new Date(date);
+        const now = new Date();
+        const diff = Math.floor((now - timeAgo) / (1000 * 60));
+        if (diff < 60) {
+            return `${diff} minutes ago`;
+        } else if (diff < 1440) {
+            return `${Math.floor(diff / 60)} hours ago`;
+        } else {
+            return `${Math.floor(diff / 1440)} days ago`;
+        }
+    },
+    getQuestionSnippet(question) {
+        return question.length > 200 ? question.slice(0, 200) + "..." : question;
+    },
+    deleteResponse(responseId) {
+        const responseToDelete = this.responses.find(
+            (response) => response.id === responseId
+        );
+        if (responseToDelete) {
+            axios
+                .delete(`/api/response/${responseId}`)
+                .then((response) => {
+                    if (response.status === 200) {
+                        this.responses = this.responses.filter(
+                            (response) => response.id !== responseId
+                        );
+                    } else {
+                        console.error(response.status);
+                    }
+                });
+        }
+    },
+},
+
     mounted() {
-        this.getResponses();
+        this.getResponses(); 
     },
 };
 </script>

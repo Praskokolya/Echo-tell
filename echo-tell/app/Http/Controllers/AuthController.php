@@ -22,7 +22,6 @@ class AuthController extends Controller
     }
     public function index()
     {
-        $user = Auth::user();
         return view("auth.index");
     }
     public function registation()

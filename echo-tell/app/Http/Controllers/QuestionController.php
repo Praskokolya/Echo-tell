@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\QuestionCollection;
 use App\Http\Resources\QuestionResource;
 use App\Http\Resources\QuestionsResource;
+use App\Http\Resources\ResponseResource;
 use App\Repositories\QuestionRepository;
 use Illuminate\Http\Request;
 
@@ -46,5 +47,14 @@ class QuestionController extends Controller
 
     public function returnQuestions(){
         return QuestionsResource::collection($this->questionRepository->getAll());
+    }
+
+    public function returnQuestionResponses($id){
+        $question = $this->questionRepository->getQuestion($id);
+        $responses = $this->questionRepository->getQuestionResponses($question);
+        return response()->json([
+            'responses' => $responses,
+            'question' => new QuestionResource($question),
+        ]);
     }
 }

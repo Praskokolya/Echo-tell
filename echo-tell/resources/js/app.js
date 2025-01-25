@@ -19,23 +19,29 @@ import HeaderComponent from './components/HeaderComponent.vue';
 import WelcomePage from './pages/WelcomePage.vue';
 import AuthPage from './pages/AuthPage.vue';
 import RegistrationPage from './pages/RegistrationPage.vue';
-import HomePage from './pages/home/HomePage.vue';
 import QuestionPage from './pages/questions/QuestionPage.vue';
 import ResponsesPage from './pages/responses/ResponsesPage.vue';
 import AllQuestionsPage from './pages/questions/AllQuestionsPage.vue';
 import NotificationsPage from './pages/NotificationsPage.vue';
 import ResponsePage from './pages/responses/ResponsePage.vue';
+import QuestionResponsesPage from './pages/responses/QuestionResponsesPage.vue';
+import CreateQuestionPage from './pages/questions/CreateQuestionPage.vue';
+import HomePage from './pages/home/HomePage.vue';
+import ProfilePage from './pages/ProfilePage.vue';
 
+app.component('home-page', HomePage)
 app.component('header-component', HeaderComponent);
 app.component('welcome-page', WelcomePage);
 app.component('auth-page', AuthPage) 
 app.component('registration-page', RegistrationPage) 
-app.component('home-page', HomePage)
+app.component('create-question-page', CreateQuestionPage)
 app.component('question-page', QuestionPage)
 app.component('responses-page', ResponsesPage)
 app.component('all-questions-page', AllQuestionsPage);
 app.component('notifications-page', NotificationsPage);
 app.component('response-page', ResponsePage)
+app.component('question-responses-page', QuestionResponsesPage);
+app.component('profile-page', ProfilePage)
 
 /**
  * The following block of code may be used to automatically register your

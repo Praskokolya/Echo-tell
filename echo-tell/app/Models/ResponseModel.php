@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Console\DumpCommand;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class ResponseModel extends Model
 {
@@ -11,20 +14,28 @@ class ResponseModel extends Model
 
     protected $table = 'responses';
     protected $fillable = [
-        'response',
+        'name_visibility',
         'question_id',
         'user_id',
         'user_name',
-        'name_visibility'
+        'response',
     ];
 
-    public function getUserNameAttribute()
+    // public function nameVisibility(): Attribute{
+    //     return Attribute::get(function ($attributes){
+    //         return $attributes['name_visibility'];
+    //     });
+    // }
+    public function userName(): Attribute
     {
-        if (isset($this->attributes['name_visibility']) && $this->attributes['name_visibility'] == 1) {
-            return $this->attributes['user_name'];
-        }
-        return 'Anonymous';
-
+        return Attribute::make(
+            get: function($value, $attributes){
+                if($attributes['name_visibility'] == 0){
+                    return 'Anonymous';
+                }
+                return $value;
+            }
+        );
     }
 
     public function user()

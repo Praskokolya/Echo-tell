@@ -24,7 +24,7 @@ class NotificationRepository
     }
 
     public function getAll(){
-        // Didn't use Auth::user() beacause my IDE showing problem with calling notifications() on it
+        // Didn't use Auth::user() beacause my code editor showing problem with calling notifications() on it
         $user = User::find(Auth::user()->id);
         return $user->notifications()->paginate(8);
     }

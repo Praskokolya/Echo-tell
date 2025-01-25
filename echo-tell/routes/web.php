@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\ResponseController;
 use App\Mail\EchoMail;
@@ -32,7 +34,10 @@ Route::controller(QuestionController::class)->group(function () {
 });
 
 Route::group(['middleware' => 'auth:sanctum'], function(){
-    Route::get('question/{question_id}/{slug}/response/{response_id}', [ResponseController::class, 'responsePage']);
+    Route::get('home', [HomePageController::class, 'index']);
+    Route::get('question/{question_id}/{slug}/response/{response_id}', [ResponseController::class, 'showResponse']);
+    Route::get('question/{question_id}/{slug}/responses', [ResponseController::class, 'showQuestionResponses']);
     Route::get('notifications', [NotificationController::class, 'index']);
-    Route::get('user/responses', [ResponseController::class, 'index']);
+    Route::get('user/interactions', [ResponseController::class, 'index']);
+    Route::get('profile/{user_name}', [ProfileController::class, 'index']);
 });

@@ -22,7 +22,7 @@ class ResponseModelFactory extends Factory
             'question_id' => 10,
             'user_name' => 'dude',
             'user_id' => 10,
-            'name_visibility' => 1,
+            'name_visibility' => 0,
         ];
     }
 }

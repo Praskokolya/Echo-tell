@@ -32,7 +32,6 @@ class NewResponseNotification extends Notification
     {
         return ['database'];
     }
-
     /**
      * Get the mail representation of the notification.
      */

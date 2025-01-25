@@ -23,6 +23,7 @@ class ResponseResource extends JsonResource
             'user_name' => $this->user_name,
             'name_visibility' => $this->name_visibility,
             'created_at' => $this->created_at,
+            'type' => 'response'
         ];
     }
 }

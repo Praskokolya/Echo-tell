@@ -11,7 +11,10 @@ use Illuminate\Support\Str;
 
 class QuestionRepository
 {
+    const RESPONSES_PER_PAGE = 6; 
+
     public function __construct(public QuestionsModel $questions) {}
+
     public function createQuestion($data)
     {
         $slugMessage = Str::slug($data['question'], '-');
@@ -36,5 +39,9 @@ class QuestionRepository
             ->withCount('responses')
             ->latest()
             ->get();
+    }
+
+    public function getQuestionResponses($question){
+        return $question->responses()->paginate(self::RESPONSES_PER_PAGE);
     }
 }

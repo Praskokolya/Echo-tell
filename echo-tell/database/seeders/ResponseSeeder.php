@@ -13,6 +13,6 @@ class ResponseSeeder extends Seeder
      */
     public function run(): void
     {
-        ResponseModel::factory(1)->create();
+        ResponseModel::factory()->create();
     }
 }

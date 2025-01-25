@@ -2,7 +2,7 @@
     <header>
         <nav class="nav">
             <div class="nav-container">
-                <a href="/" class="brand">Echo tell</a>
+                <a href="/home" class="brand">Echo tell</a>
                 <ul class="nav-menu" :class="{ active: isMenuOpen }">
                     <li>
                         <a href="/create/question" class="nav-item"
@@ -46,7 +46,7 @@
                             </ul>
                         </div>
                     </li>
-                    <li><a href="/contact" class="nav-item">Item 4</a></li>
+                    <li><a href="/user/interactions" class="nav-item">Your interactions</a></li>
                 </ul>
             </div>
         </nav>
@@ -160,23 +160,51 @@ export default {
     color: #5e81ac;
 }
 
-.notification-badge {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background-color: red;
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 50%;
-    display: inline-block;
-    min-width: 20px;
-    text-align: center;
+.notification-card {
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
 }
 
+.notification-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    background-color: #e9f2fe;
+}
+
+.notification-header {
+    font-weight: bold;
+    font-size: 16px;
+    color: #5e81ac;
+    margin-bottom: 8px;
+}
+
+.notification-body {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.notification-card a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.notification-card a:hover {
+    text-decoration: underline;
+}
+
+.notification-card:active {
+    background-color: #d0e3ff;
+}
 .notifications-dropdown {
     position: absolute;
+    top: 55%;
     right: 0;
     background-color: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -189,27 +217,9 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    margin-top: 10px;
 }
 
-.notification-card {
-    cursor: pointer;
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.notification-header {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.notification-body {
-    font-size: 14px;
-    color: #333;
-}
 
 @media (max-width: 768px) {
     .nav-menu {

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 Use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
+use Laravel\Reverb\Pulse\Livewire\Messages;
 
 class User extends Authenticatable
 {
@@ -25,6 +27,12 @@ class User extends Authenticatable
         'password',
     ];
 
+    protected $appends = ['url'];
+
+    public function getUrlAttribute(){
+        return url('profile',Str::slug($this->attributes['name']));
+    }
+    
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -50,7 +58,16 @@ class User extends Authenticatable
     public function question(){
         return $this->hasMany(QuestionsModel::class);
     }
+
     public function responses(){
         return $this->hasMany(ResponseModel::class);
+    }
+    
+    public function messages(){
+        return $this->hasMany(Message::class);
+    }
+
+    public function sentMessages(){
+        return $this->hasMany(Message::class, 'sender_id');
     }
 }
