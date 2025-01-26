@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Message extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $table = 'messages';
     protected $fillable = [
@@ -27,7 +28,8 @@ class Message extends Model
     public function senderName(): Attribute
     {
         return Attribute::make(
-            get: function (array $attributes, $value) {
+            get: function ($value, array $attributes) {
+                $attributes['name_visibility'] = 0;
                 if ($attributes['name_visibility'] == 0) {
                     return 'Anonymous';
                 }

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Message;
 use App\Models\ResponseModel;
 use App\Models\User;
+use App\Observers\MessageObserver;
 use App\Observers\NotificationObserver;
 use App\Observers\ResponseObserver;
 use GuzzleHttp\Psr7\Response;
@@ -26,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Message::observe(MessageObserver::class);
         ResponseModel::observe(ResponseObserver::class);
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }

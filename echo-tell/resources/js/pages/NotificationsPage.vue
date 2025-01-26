@@ -4,10 +4,10 @@
             <a  
                 v-for="(notification, index) in notifications"
                 :key="index"
-                :href="notification.data.question_url + '/response/' + notification.data.response_id"
+                :href="notification.data.url"
                 class="notification-card"
             >
-                <p>{{ notification.data.message }}</p>
+                <p>{{ notification.data }}</p>
             </a>
         </div>
         <div v-else>

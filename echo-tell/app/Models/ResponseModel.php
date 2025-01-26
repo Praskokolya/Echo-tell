@@ -30,6 +30,7 @@ class ResponseModel extends Model
     {
         return Attribute::make(
             get: function($value, $attributes){
+                $attributes['name_visibility'] = 0;
                 if($attributes['name_visibility'] == 0){
                     return 'Anonymous';
                 }

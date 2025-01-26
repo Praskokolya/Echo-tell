@@ -42,7 +42,7 @@ class ResponseController extends Controller
     {
         $responses = ResponseResource::collection($this->responseRepository->getAll());
         $messages = MessagesResource::collection($this->messageRepository->getAll());
-        return $responses->concat($messages)->sortBy('created_at');
+        return $responses->concat($messages)->sortByDesc('created_at');
     }
 
     public function deleteResponse($id)

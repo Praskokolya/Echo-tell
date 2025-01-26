@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthRequest;
 use App\Jobs\TestJob;
+use App\Notifications\NewMessageNotification;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use PHPUnit\Event\Code\TestMethodBuilder;
 

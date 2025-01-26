@@ -20,6 +20,7 @@ class MessageFactory extends Factory
             'user_id' => 10,
             'message' => 'hello world',
             'sender_name' => 'USER',
+            'sender_id' => 8,
             'name_visibility' => 1
         ];
     }

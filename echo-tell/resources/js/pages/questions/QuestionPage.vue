@@ -73,7 +73,7 @@ export default {
                 return;
             }else{
                 axios.post(`/api/response/${this.id}`, {response: this.response})
-                window.location.href = `/user/responses`;
+                window.location.href = `/user/interactions`;
             }
         },
         getQuestionData() {

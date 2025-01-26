@@ -38,8 +38,7 @@ class NewResponseNotification extends Notification
     public function toDatabase()
     {
         return [
-            'question_url' => $this->responseData->question->url,
-            'response_id' => $this->responseData->id,
+            'url' => $this->responseData->question->url . "/response/" . $this->responseData->id,
             'message' => $this->responseData->userName . ' replied to your question',
         ];
     }
