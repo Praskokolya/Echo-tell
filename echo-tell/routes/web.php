@@ -10,6 +10,7 @@ use App\Http\Controllers\ResponseController;
 use App\Mail\EchoMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\Mime\MessageConverter;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,16 +29,18 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::controller(QuestionController::class)->group(function () {
-    Route::get('/questions', 'questions');
-    Route::get('/create/question', 'createQuestion');
+    Route::get('questions', 'questions');
+    Route::get('create/question', 'createQuestion');
     Route::get('question/{id}/{slug}', 'index');
 });
 
-Route::group(['middleware' => 'auth:sanctum'], function(){
+Route::group(['middleware' => 'auth'], function(){
     Route::get('home', [HomePageController::class, 'index']);
     Route::get('question/{question_id}/{slug}/response/{response_id}', [ResponseController::class, 'showResponse']);
     Route::get('question/{question_id}/{slug}/responses', [ResponseController::class, 'showQuestionResponses']);
     Route::get('notifications', [NotificationController::class, 'index']);
     Route::get('user/interactions', [ResponseController::class, 'index']);
     Route::get('profile/{user_name}', [ProfileController::class, 'index']);
+    Route::get('message/{uuid}', [MessagesController::class, 'index']);
+    Route::get('messages/{uuid}', [MessagesController::class, 'messagesFromUser']);
 });

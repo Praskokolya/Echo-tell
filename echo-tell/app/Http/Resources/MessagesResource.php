@@ -17,8 +17,9 @@ class MessagesResource extends JsonResource
         return [
             'message' => $this->message,
             'type' => 'message',
-            'user' => $this->user->name,
-            'created_at' => $this->created_at
+            'sender_name' => $this->sender_name,
+            'created_at' => $this->created_at,
+            'url' => $this->url
         ];
     }
 }

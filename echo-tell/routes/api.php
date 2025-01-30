@@ -17,18 +17,20 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::post('/question', [QuestionController::class, 'create'])->name('create.question');
-    Route::get('/question/responses/{id}', [QuestionController::class, 'returnQuestionResponses']);
-    Route::get('/user/interactions', [ResponseController::class, 'returnInteractions']);
-    Route::post('/response/{id}', [ResponseController::class, 'createResponse']);
-    Route::delete('/response/{id}', [ResponseController::class, 'deleteResponse']);
-    Route::get('/response/{id}', [ResponseController::class, 'returnResponse']);
-    Route::get('/responses/{id}');
+    Route::post('question', [QuestionController::class, 'create'])->name('create.question');
+    Route::get('question/responses/{id}', [QuestionController::class, 'returnQuestionResponses']);
+    Route::get('user/interactions', [ResponseController::class, 'returnInteractions']);
+    Route::post('response/{id}', [ResponseController::class, 'createResponse']);
+    Route::delete('response/{id}', [ResponseController::class, 'deleteResponse']);
+    Route::get('response/{id}', [ResponseController::class, 'returnResponse']);
+    Route::get('responses/{id}');
     Route::get('user/questions', [QuestionController::class, 'returnQuestions']);
     Route::get('notifications', [NotificationController::class, 'returnNotifications']);
-    Route::get('/user/home-data', [HomePageController::class, 'getHomeData']);
+    Route::get('user/home-data', [HomePageController::class, 'getHomeData']);
     Route::post('message/{user_name}', [MessagesController::class, 'createMessage']);
-    Route::get('/user/{user_name}', [ProfileController::class, 'returnUser']);
+    Route::get('user/{user_name}', [ProfileController::class, 'returnUser']);
+    Route::get('message/{id}', [MessagesController::class, 'returnMessage']);
+    Route::get('messages/{uuid}', [MessagesController::class, 'returnMessagesFromUser']);
 });
 
 Route::get('/question/{id}', [QuestionController::class, 'returnData']);

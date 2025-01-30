@@ -21,6 +21,7 @@ class NewResponseNotification extends Notification
      */
     public function __construct(public $responseData)
     {
+
     }
 
     /**
@@ -39,7 +40,7 @@ class NewResponseNotification extends Notification
     {
         return [
             'url' => $this->responseData->question->url . "/response/" . $this->responseData->id,
-            'message' => $this->responseData->userName . ' replied to your question',
+            'message' => $this->responseData->user_name . ' replied to your question',
         ];
     }
 

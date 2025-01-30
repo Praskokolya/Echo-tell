@@ -20,6 +20,7 @@ class NotificationService
     public function createUserNotification($data)
     {
         $userForNotification = $this->notificationRepository->getUserForNotification($data->question_id ?: $data->user_id);
+
         switch(get_class($data)){
             case ResponseModel::class: 
                 $userForNotification->notify(new NewResponseNotification($data));
@@ -30,6 +31,7 @@ class NotificationService
         };
 
         $lastNotifications = $userForNotification->notifications->sortByDesc('created_at')->take(3)->pluck('data');
+        
         broadcast(new NewResponse($lastNotifications));
     }
 }

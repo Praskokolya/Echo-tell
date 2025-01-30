@@ -24,6 +24,7 @@ class ResponseRepository
             'user_id' => Auth::id(),
             'user_name' => Auth::user()->name,
             'question_id' => $id,
+            'name_visibility' => $data['name_visibility']
         ]);
     }
     

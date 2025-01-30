@@ -28,6 +28,8 @@ import QuestionResponsesPage from './pages/responses/QuestionResponsesPage.vue';
 import CreateQuestionPage from './pages/questions/CreateQuestionPage.vue';
 import HomePage from './pages/home/HomePage.vue';
 import ProfilePage from './pages/ProfilePage.vue';
+import MessagePage from './pages/messages/MessagePage.vue';
+import UserMessagesPage from './pages/messages/UserMessagesPage.vue';
 
 app.component('home-page', HomePage)
 app.component('header-component', HeaderComponent);
@@ -42,6 +44,9 @@ app.component('notifications-page', NotificationsPage);
 app.component('response-page', ResponsePage)
 app.component('question-responses-page', QuestionResponsesPage);
 app.component('profile-page', ProfilePage)
+app.component('message-page', MessagePage)
+app.component('user-messages-page', UserMessagesPage)
+
 
 /**
  * The following block of code may be used to automatically register your

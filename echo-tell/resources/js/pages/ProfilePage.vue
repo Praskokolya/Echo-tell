@@ -13,11 +13,17 @@
         </div>
 
         <div class="message-form">
-            <textarea 
+            <textarea
                 v-model="message"
                 placeholder="Write a message..."
                 rows="4"
             ></textarea>
+
+            <label>
+                <input type="checkbox" v-model="name_visibility" />
+                Send anonymously
+            </label>
+
             <button @click="sendMessage" :disabled="!message">Send</button>
         </div>
     </div>
@@ -31,6 +37,7 @@ export default {
             user: {},
             message: "",
             id: null,
+            name_visibility: false,
         };
     },
     computed: {
@@ -47,14 +54,16 @@ export default {
             });
         },
         sendMessage() {
+            console.log(this.name_visibility); 
             if (this.message && this.id) {
                 axios
                     .post("/api/message/" + this.user.name, {
                         message: this.message,
                         id: this.id,
+                        name_visibility: this.name_visibility ? 0 : 1,
                     })
-                    .then(()=>{
-                        window.location.href = '/user/interactions'
+                    .then(() => {
+                        console.log(this.name_visibility); 
                     })
                     .catch((error) => {
                         console.error(error);
@@ -113,6 +122,18 @@ export default {
     margin-bottom: 10px;
     font-size: 1rem;
     resize: none;
+}
+
+.message-form label {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.message-form input[type="checkbox"] {
+    margin-right: 8px;
 }
 
 .message-form button {

@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('messages', function (Blueprint $table) {
-            $table->string('user_id');
-            $table->string('messages');
-            $table->string('user');
-            $table->string('name_visibility')->default(false);
-            $table->id();
+            $table->integer('user_id');
+            $table->uuid('id')->primary();
+            $table->string('messages', 200);
+            $table->string('user', 20);
+            $table->integer('name_visibility')->default(false);
             $table->timestamps();
         });
     }

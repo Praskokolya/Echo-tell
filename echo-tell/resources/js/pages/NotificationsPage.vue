@@ -7,7 +7,7 @@
                 :href="notification.data.url"
                 class="notification-card"
             >
-                <p>{{ notification.data }}</p>
+                <p>{{ notification.data.message }}</p>
             </a>
         </div>
         <div v-else>

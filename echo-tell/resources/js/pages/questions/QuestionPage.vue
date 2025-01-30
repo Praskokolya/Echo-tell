@@ -13,19 +13,14 @@
                             showUserName ? questionData.user_name : "Anonymous"
                         }}</strong>
                     </span>
-                    <span
-                        ><strong>Created:</strong>
-                        {{ formatDate(questionData.created_at) }}</span
-                    >
+                    <span><strong>Created:</strong> {{ formatDate(questionData.created_at) }}</span>
                 </div>
                 <p>
                     <strong>Copy and share url: </strong>
                     <a
                         :href="questionData.question_url"
                         target="_blank"
-                        @click.prevent="
-                            copyToClipboard(questionData.question_url)
-                        "
+                        @click.prevent="copyToClipboard(questionData.question_url)"
                         class="copyable-url"
                     >
                         {{ questionData.question_url }}
@@ -47,6 +42,15 @@
                         ></textarea>
                         <small>{{ response.length }} / 200 characters</small>
                     </div>
+
+                    <!-- Перемикач для анонімності -->
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" v-model="name_visibility" />
+                            <span>Send anonymously</span>
+                        </label>
+                    </div>
+
                     <button type="submit" class="btn btn-submit">
                         Send answer
                     </button>
@@ -62,18 +66,25 @@ export default {
         return {
             response: "",
             questionData: null,
-            name_visibility: true,
+            name_visibility: false, 
             id: window.location.pathname.split("/")[2]
         };
     },
     methods: {
-        submitQuestion(){
-            if(!this.response.trim()){
+        submitQuestion() {
+            if (!this.response.trim()) {
                 alert("Please enter a response before submitting!");
                 return;
-            }else{
-                axios.post(`/api/response/${this.id}`, {response: this.response})
-                window.location.href = `/user/interactions`;
+            } else {
+                const data = {
+                    response: this.response,
+                    name_visibility: this.name_visibility ? 0 : 1,
+                };
+                axios.post(`/api/response/${this.id}`, data)
+                    .then(() => {
+                        console.log(data);
+                        // window.location.href = `/user/interactions`;
+                    });
             }
         },
         getQuestionData() {
@@ -114,59 +125,6 @@ export default {
 </script>
 
 <style scoped>
-
-.switch {
-    font-size: 17px;
-    position: relative;
-    display: inline-block;
-    width: 3.5em;
-    height: 2em;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #fff;
-    border: 1px solid #adb5bd;
-    transition: 0.4s;
-    border-radius: 30px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 1.4em;
-    width: 1.4em;
-    border-radius: 20px;
-    left: 0.27em;
-    bottom: 0.25em;
-    background-color: #adb5bd;
-    transition: 0.4s;
-}
-
-input:checked + .slider {
-    background-color: #007bff;
-    border: 1px solid #007bff;
-}
-
-input:focus + .slider {
-    box-shadow: 0 0 1px #007bff;
-}
-
-input:checked + .slider:before {
-    transform: translateX(1.4em);
-    background-color: #fff;
-}
 .page-container {
     display: flex;
     justify-content: center;
@@ -272,8 +230,8 @@ input:checked + .slider:before {
     text-decoration: underline;
 }
 
-.toggle-anonymity {
-    margin-top: 20px;
-    text-align: left;
+/* Простий стиль для перемикача */
+label input {
+    margin-right: 10px;
 }
 </style>

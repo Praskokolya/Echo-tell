@@ -21,20 +21,14 @@ class ResponseModel extends Model
         'response',
     ];
 
-    // public function nameVisibility(): Attribute{
-    //     return Attribute::get(function ($attributes){
-    //         return $attributes['name_visibility'];
-    //     });
-    // }
     public function userName(): Attribute
     {
         return Attribute::make(
             get: function($value, $attributes){
-                $attributes['name_visibility'] = 0;
-                if($attributes['name_visibility'] == 0){
-                    return 'Anonymous';
+                if (isset($attributes['name_visibility']) && $attributes['name_visibility'] == 1) {
+                    return $value;
                 }
-                return $value;
+                return 'Anonymous';
             }
         );
     }

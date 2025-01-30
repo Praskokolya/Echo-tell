@@ -59,13 +59,11 @@ export default {
         axios
             .get("/api/user/interactions")
             .then((response) => {
-                // Перевіряємо кожен елемент на тип
                 this.responses = Object.values(response.data).map((item) => {
-                    // Якщо це повідомлення, додаємо користувача
                     if (item.type === 'message') {
-                        item.user = item.user || "Anonymous";  // Якщо немає користувача, ставимо Anonymous
+                        item.user = item.user || "Anonymous"; 
                     } else if (item.type === 'response') {
-                        item.user = item.user_name || "Anonymous";  // Прив'язуємо user_name до user
+                        item.user = item.user_name || "Anonymous"; 
                     }
                     return item;
                 });

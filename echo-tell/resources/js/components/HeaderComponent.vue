@@ -32,7 +32,7 @@
                                     :key="index"
                                     class="notification-card"
                                 >
-                                    <a :href="notification.url + '/response/' + notification.response_id">
+                                    <a :href="notification.url">
                                         <div class="notification-header">
                                             <strong>{{
                                                 notification.title
