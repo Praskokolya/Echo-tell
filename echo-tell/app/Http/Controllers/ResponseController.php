@@ -11,6 +11,7 @@ use App\Repositories\QuestionRepository;
 use App\Repositories\ResponseRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ResponseController extends Controller
 {

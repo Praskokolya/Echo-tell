@@ -80,7 +80,7 @@
     },
     methods: {
       getData() {
-        axios.get('/api/user/home-data')
+        axios.get('/api/user/user-data')
           .then((response) => {
             this.user = response.data;
             console.log(response);

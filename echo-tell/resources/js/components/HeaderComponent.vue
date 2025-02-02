@@ -46,7 +46,11 @@
                             </ul>
                         </div>
                     </li>
-                    <li><a href="/user/interactions" class="nav-item">Your interactions</a></li>
+                    <li>
+                        <a href="/user/interactions" class="nav-item"
+                            >Your interactions</a
+                        >
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -56,6 +60,7 @@
 <script>
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
+import axios from "axios";
 
 window.Pusher = Pusher;
 
@@ -91,23 +96,50 @@ export default {
                 this.notifications = this.notifications.slice(-3);
             }
         },
+        fetchUserData() {
+            axios
+                .get("/api/user/user-data")
+                .then((response) => {
+                    this.userId = response.data.id;
+
+                    this.connectToChannel();
+                })
+                .catch((error) => {
+                    console.error("Error fetching user data:", error);
+                });
+        },
+        connectToChannel() {
+            if (this.userId) {
+                window.Echo = new Echo({
+                    broadcaster: "pusher",
+                    key: import.meta.env.VITE_PUSHER_APP_KEY,
+                    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+                    forceTLS: true,
+                    encrypted: true,
+                    authEndpoint: "/broadcasting/auth", 
+                    auth: {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    },
+                });
+
+                window.Echo.private(`notification.9`).listen(
+                    "NewInteraction",
+                    (data) => {
+                        console.log("New response received:", data);
+                        this.notifications.push(...data.response);
+                        this.limitNotifications();
+                        this.updateLocalStorage();
+                    }
+                );
+            }
+        },
     },
     mounted() {
-        window.Echo = new Echo({
-            broadcaster: "pusher",
-            key: import.meta.env.VITE_PUSHER_APP_KEY,
-            cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-            forceTLS: true,
-            encrypted: true,
-        });
-
-        window.Echo.channel("notifications").listen("NewResponse", (data) => {
-            console.log("New response received:", data);
-            this.notifications.push(...data.response);
-            this.limitNotifications();
-            this.updateLocalStorage();
-            console.log("Notification count:", this.notifications);
-        });
+        this.fetchUserData();
     },
 };
 </script>
@@ -219,7 +251,6 @@ export default {
     justify-content: flex-end;
     margin-top: 10px;
 }
-
 
 @media (max-width: 768px) {
     .nav-menu {

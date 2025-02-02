@@ -26,7 +26,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('responses/{id}');
     Route::get('user/questions', [QuestionController::class, 'returnQuestions']);
     Route::get('notifications', [NotificationController::class, 'returnNotifications']);
-    Route::get('user/home-data', [HomePageController::class, 'getHomeData']);
+    Route::get('user/user-data', [HomePageController::class, 'getHomeData']);
     Route::post('message/{user_name}', [MessagesController::class, 'createMessage']);
     Route::get('user/{user_name}', [ProfileController::class, 'returnUser']);
     Route::get('message/{id}', [MessagesController::class, 'returnMessage']);

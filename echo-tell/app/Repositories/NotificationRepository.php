@@ -12,20 +12,18 @@ class NotificationRepository
 {
     public function __construct(
         public ResponseModel $responseModel,
-        public QuestionsModel $questionsModel
-
+        public QuestionsModel $questionsModel,
+        public User $user
     ) {
     }
     
     // Getting user by his question id
     
     public function getUserForNotification($id){
-        return $this->questionsModel->find($id)->user;
+        return $this->user->find($id);
     }
 
     public function getAll(){
-        // Didn't use Auth::user() beacause my code editor showing problem with calling notifications() on it
-        $user = User::find(Auth::user()->id);
-        return $user->notifications()->paginate(8);
+        return Auth::user()->notifications()->paginate(8);
     }
 }

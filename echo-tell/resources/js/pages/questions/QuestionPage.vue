@@ -10,7 +10,7 @@
                     <span>
                         User:
                         <strong>{{
-                            showUserName ? questionData.user_name : "Anonymous"
+                            questionData.user_name
                         }}</strong>
                     </span>
                     <span><strong>Created:</strong> {{ formatDate(questionData.created_at) }}</span>

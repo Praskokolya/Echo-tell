@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\NewInteraction;
 use App\Events\NewResponse;
 use App\Models\Message;
 use App\Models\ResponseModel;
@@ -18,9 +19,9 @@ class NotificationService
     public function __construct(public NotificationRepository $notificationRepository) {
     }
     public function createUserNotification($data)
-    {
-        $userForNotification = $this->notificationRepository->getUserForNotification($data->question_id ?: $data->user_id);
-
+    {    
+        $userForNotification = $this->notificationRepository->getUserForNotification($data->author_id ?: $data->user_id);
+        
         switch(get_class($data)){
             case ResponseModel::class: 
                 $userForNotification->notify(new NewResponseNotification($data));
@@ -31,7 +32,6 @@ class NotificationService
         };
 
         $lastNotifications = $userForNotification->notifications->sortByDesc('created_at')->take(3)->pluck('data');
-        
-        broadcast(new NewResponse($lastNotifications));
+        broadcast(new NewInteraction($lastNotifications, $userForNotification->id));
     }
 }

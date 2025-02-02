@@ -19,6 +19,7 @@ class ResponseModel extends Model
         'user_id',
         'user_name',
         'response',
+        'author_id'
     ];
 
     public function userName(): Attribute

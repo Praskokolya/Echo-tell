@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class MessageRepository
 {
+
+    const MESSAGES_PER_PAGE = 6;
+
     public function __construct(public Message $message, public User $user) {}
 
     public function createMessage($data)
@@ -34,11 +37,13 @@ class MessageRepository
     public function getMessagesFromUser($id)
     {
         $message = $this->message->find($id);
-        
+
         return $this->user
             ->find($message->sender_id)
             ->sentMessages()
             ->where('user_id', $message->user_id)
-            ->paginate(6);
+            ->where('name_visibility', $message->name_visibility)
+            ->latest()
+            ->paginate(self::MESSAGES_PER_PAGE);
     }
 }
