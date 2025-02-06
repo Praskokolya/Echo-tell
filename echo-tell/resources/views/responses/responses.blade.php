@@ -10,7 +10,7 @@
 <body>
     <div id="app">
         <header-component></header-component> 
-        <responses-page></responses-page>
+        <interactions-page></interactions-page>
     </div>
 </body>
 </html>

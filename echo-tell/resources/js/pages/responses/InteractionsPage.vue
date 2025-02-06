@@ -34,7 +34,7 @@
                 <div class="card-footer">
                     <button
                         class="delete-btn"
-                        @click="deleteResponse(item.id)"
+                        @click="deleteContent(item.id)"
                     >
                         Delete
                     </button>
@@ -88,24 +88,29 @@ export default {
     getQuestionSnippet(question) {
         return question.length > 200 ? question.slice(0, 200) + "..." : question;
     },
-    deleteResponse(responseId) {
-        const responseToDelete = this.responses.find(
-            (response) => response.id === responseId
-        );
-        if (responseToDelete) {
-            axios
-                .delete(`/api/response/${responseId}`)
-                .then((response) => {
-                    if (response.status === 200) {
-                        this.responses = this.responses.filter(
-                            (response) => response.id !== responseId
-                        );
-                    } else {
-                        console.error(response.status);
-                    }
-                });
-        }
-    },
+    deleteContent(responseId) {
+    const contentToDelete = this.responses.find(
+        (item) => item.id === responseId
+    );
+
+    if (contentToDelete) {
+        axios
+            .delete(`/api/content/${responseId}`)
+            .then((response) => {
+                if (response.status === 200) {
+                    this.responses = this.responses.filter(
+                        (item) => item.id !== responseId
+                    );
+                } else {
+                    console.error(response.status);
+                }
+            })
+            .catch((error) => {
+                console.error("Error deleting content:", error);
+            });
+    }
+}
+
 },
 
     mounted() {

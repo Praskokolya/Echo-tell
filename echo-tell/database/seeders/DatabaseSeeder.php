@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             // UserSeeder::class,
-            ResponseSeeder::class,
-            // MessageSeeder::class,
+            // ResponseSeeder::class,
+            MessageSeeder::class,
         ]);
     }
 }

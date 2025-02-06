@@ -44,4 +44,8 @@ class QuestionRepository
     public function getQuestionResponses($question){
         return $question->responses()->paginate(self::RESPONSES_PER_PAGE);
     }
+
+    public function checkIfUserAuthor($id){
+        return $this->questions->find($id)->user_id;
+    }
 }

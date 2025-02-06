@@ -21,7 +21,7 @@
           <span v-else>Anonymous</span>
         </p>
         <p class="response-meta">
-          <strong>Response created at:</strong> {{ response.created_at | formatDate }}
+          <strong>Response created at:</strong> {{ response.created_at}}
         </p>
       </div>
     </div>
@@ -56,7 +56,19 @@ export default {
     },
     goToUserProfile(userName) {
       window.location.href = `/user/${userName}`;
-    }
+    },
+    formatTime(date) {
+        const timeAgo = new Date(date);
+        const now = new Date();
+        const diff = Math.floor((now - timeAgo) / (1000 * 60));
+        if (diff < 60) {
+            return `${diff} minutes ago`;
+        } else if (diff < 1440) {
+            return `${Math.floor(diff / 60)} hours ago`;
+        } else {
+            return `${Math.floor(diff / 1440)} days ago`;
+        }
+    },
   },
   mounted() {
     this.getResponse();

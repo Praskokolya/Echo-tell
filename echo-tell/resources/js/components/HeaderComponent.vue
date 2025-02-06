@@ -101,7 +101,6 @@ export default {
                 .get("/api/user/user-data")
                 .then((response) => {
                     this.userId = response.data.id;
-
                     this.connectToChannel();
                 })
                 .catch((error) => {
@@ -126,7 +125,7 @@ export default {
                     },
                 });
 
-                window.Echo.private(`notification.9`).listen(
+                window.Echo.private(`notification.` + this.userId).listen(
                     "NewInteraction",
                     (data) => {
                         console.log("New response received:", data);

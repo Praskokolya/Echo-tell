@@ -46,7 +46,7 @@ class ResponseController extends Controller
         return $responses->concat($messages)->sortByDesc('created_at');
     }
 
-    public function deleteResponse($id)
+    public function deleteContent($id)
     {
         $this->responseRepository->deleteResponse($id);
     }

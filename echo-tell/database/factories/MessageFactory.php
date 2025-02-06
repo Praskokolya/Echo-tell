@@ -17,10 +17,10 @@ class MessageFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => 9,
+            'user_id' => 22,
             'message' => 'hello world',
             'sender_name' => 'USER',
-            'sender_id' => 9,
+            'sender_id' => 10,
             'name_visibility' => 1
         ];
     }

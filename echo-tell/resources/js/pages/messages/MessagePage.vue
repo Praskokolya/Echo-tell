@@ -1,5 +1,5 @@
 <template>
-  <div class="message-card" v-if="messageData">
+  <div v-if="messageData && userAuthor !== '0'" class="message-card">
     <div class="message-header">
       <h3>
         <span v-if="messageData.sender_name !== 'Anonymous'">
@@ -29,14 +29,23 @@ export default {
   data() {
     return {
       messageData: null,
+      userAuthor: null, 
       id: window.location.pathname.split("/")[2]
     };
   },
   methods: {
     getData() {
-      axios.get('/api/message/' + this.id).then((response) => {
-        this.messageData = response.data.data;
-      });
+      axios.get('/api/message/' + this.id)
+        .then((response) => {
+          this.messageData = response.data.data;
+
+          if (this.userAuthor === '0') {
+            this.messageData = null;
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
     },
     formatDate(date) {
       const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };

@@ -20,7 +20,7 @@ import WelcomePage from './pages/WelcomePage.vue';
 import AuthPage from './pages/AuthPage.vue';
 import RegistrationPage from './pages/RegistrationPage.vue';
 import QuestionPage from './pages/questions/QuestionPage.vue';
-import ResponsesPage from './pages/responses/ResponsesPage.vue';
+import InteractionsPage from './pages/responses/InteractionsPage.vue';
 import AllQuestionsPage from './pages/questions/AllQuestionsPage.vue';
 import NotificationsPage from './pages/NotificationsPage.vue';
 import ResponsePage from './pages/responses/ResponsePage.vue';
@@ -38,7 +38,7 @@ app.component('auth-page', AuthPage)
 app.component('registration-page', RegistrationPage) 
 app.component('create-question-page', CreateQuestionPage)
 app.component('question-page', QuestionPage)
-app.component('responses-page', ResponsesPage)
+app.component('interactions-page', InteractionsPage)
 app.component('all-questions-page', AllQuestionsPage);
 app.component('notifications-page', NotificationsPage);
 app.component('response-page', ResponsePage)
@@ -46,7 +46,6 @@ app.component('question-responses-page', QuestionResponsesPage);
 app.component('profile-page', ProfilePage)
 app.component('message-page', MessagePage)
 app.component('user-messages-page', UserMessagesPage)
-
 
 /**
  * The following block of code may be used to automatically register your
