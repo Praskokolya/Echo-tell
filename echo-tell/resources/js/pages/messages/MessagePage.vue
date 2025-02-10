@@ -10,7 +10,7 @@
       <span class="message-type" :class="messageData.type.toLowerCase()">{{ messageData.type }}</span>
     </div>
     <div class="message-body">
-      <p><i class="fas fa-comment"></i> {{ messageData.message }}</p>
+      <p><i class="fas fa-comment"></i> {{ messageData.text }}</p>
       <p><i class="fas fa-user"></i> {{ messageData.user }}</p>
       <p><i class="far fa-clock"></i> {{ formatDate(messageData.created_at) }}</p>
     </div>

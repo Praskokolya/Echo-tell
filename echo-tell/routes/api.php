@@ -17,13 +17,14 @@ Route::get('/user', function (Request $request) {
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('question', [QuestionController::class, 'create'])->name('create.question');
     Route::get('question/responses/{id}', [QuestionController::class, 'returnQuestionResponses']);
-    Route::get('user/interactions', [ResponseController::class, 'returnInteractions']);
+    Route::get('user/messages', [MessagesController::class, 'returnMessages']);
+    Route::get('user/responses', [ResponseController::class, 'returnResponses']);
+
     Route::post('response/{id}', [ResponseController::class, 'createResponse']);
 
     Route::delete('content/{id}', [ResponseController::class, 'deleteContent']);
 
     Route::get('response/{id}', [ResponseController::class, 'returnResponse']);
-    // Route::get('responses/{id}');
     Route::get('user/questions', [QuestionController::class, 'returnQuestions']);
     Route::get('notifications', [NotificationController::class, 'returnNotifications']);
     Route::get('user/user-data', [HomePageController::class, 'getHomeData']);

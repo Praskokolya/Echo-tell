@@ -2,14 +2,14 @@
 
 namespace App\Repositories;
 
-use App\Models\QuestionsModel;
-use App\Models\ResponseModel;
+use App\Models\Question;
+use App\Models\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class ResponseRepository
 {
-    public function __construct(public ResponseModel $response, public QuestionsModel $questionsModel) {}
+    public function __construct(public Response $response, public Question $Question) {}
 
     public function getAll()
     {
@@ -17,11 +17,11 @@ class ResponseRepository
             ->with('question')
             ->where('user_id', Auth::id())
             ->latest()
-            ->get();
+            ->paginate(10);
     }
     public function createResponse($data, $id)
     {
-        $questionAuthor = $this->questionsModel->find($id)->user->id; 
+        $questionAuthor = $this->Question->find($id)->user->id; 
         
         $this->response->create([
             'response' => $data['response'],

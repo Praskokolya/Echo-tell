@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Models\QuestionsModel;
-use App\Models\ResponseModel;
+use App\Models\Question;
+use App\Models\Response;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Log;
 class NotificationRepository
 {
     public function __construct(
-        public ResponseModel $responseModel,
-        public QuestionsModel $questionsModel,
+        public Response $Response,
+        public Question $Question,
         public User $user
     ) {
     }

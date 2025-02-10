@@ -31,7 +31,7 @@ class MessageRepository
 
     public function getAll()
     {
-        return Auth::user()->sentMessages()->with('user')->get();
+        return Auth::user()->sentMessages()->with('user')->paginate(10);
     }
 
     public function getMessagesFromUser($id)

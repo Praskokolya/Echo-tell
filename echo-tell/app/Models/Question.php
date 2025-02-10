@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class QuestionsModel extends Model
+class Question extends Model 
 {
+    use HasFactory;
+    
     protected $fillable = [
         'question',
         'slug',
@@ -27,7 +30,7 @@ class QuestionsModel extends Model
     }
     
     public function responses(){
-        return $this->hasMany(ResponseModel::class, 'question_id');
+        return $this->hasMany(Response::class, 'question_id');
     }
     
 }

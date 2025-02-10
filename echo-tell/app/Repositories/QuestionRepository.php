@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Resources\QuestionCollection;
 use App\Http\Resources\QuestionResource;
-use App\Models\QuestionsModel;
+use App\Models\Question;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -13,7 +13,7 @@ class QuestionRepository
 {
     const RESPONSES_PER_PAGE = 6; 
 
-    public function __construct(public QuestionsModel $questions) {}
+    public function __construct(public Question $questions) {}
 
     public function createQuestion($data)
     {
@@ -38,7 +38,7 @@ class QuestionRepository
             ->where('user_id', Auth::id())
             ->withCount('responses')
             ->latest()
-            ->get();
+            ->paginate(12);
     }
 
     public function getQuestionResponses($question){

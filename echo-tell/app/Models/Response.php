@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 
-class ResponseModel extends Model
+class Response extends Model
 {
     use HasFactory;
 
@@ -40,6 +40,6 @@ class ResponseModel extends Model
     }
     public function question()
     {
-        return $this->belongsTo(QuestionsModel::class, 'question_id');
+        return $this->belongsTo(Question::class, 'question_id');
     }
 }

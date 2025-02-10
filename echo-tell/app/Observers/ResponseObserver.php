@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Models\ResponseModel;
+use App\Models\Response;
 use App\Models\User;
 use App\Notifications\NewResponseNotification;
 use App\Repositories\UserRepository;
@@ -18,7 +18,7 @@ class ResponseObserver
         
     }
     
-    public function created(ResponseModel $responseModel){
-        $this->notificationService->createUserNotification($responseModel);
+    public function created(Response $Response){
+        $this->notificationService->createUserNotification($Response);
     } 
 }

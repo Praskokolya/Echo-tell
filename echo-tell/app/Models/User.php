@@ -55,11 +55,11 @@ class User extends Authenticatable
 
     // User relationship with questions 
     public function question(){
-        return $this->hasMany(QuestionsModel::class);
+        return $this->hasMany(Question::class);
     }
 
     public function responses(){
-        return $this->hasMany(ResponseModel::class);
+        return $this->hasMany(Response::class);
     }
     
     public function messages(){

@@ -22,7 +22,10 @@ class MessagesController extends Controller
     public function returnMessagesFromUser($id){
         return $this->messageRepository->getMessagesFromUser($id);
     }
-
+    public function returnMessages(){
+        return MessagesResource::collection($this->messageRepository->getAll());
+ 
+    }
     public function returnMessage($id){
         return new MessagesResource($this->messageRepository->getMessage($id));
     }

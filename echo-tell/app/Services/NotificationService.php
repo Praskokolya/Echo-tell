@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Events\NewInteraction;
 use App\Events\NewResponse;
 use App\Models\Message;
-use App\Models\ResponseModel;
+use App\Models\Response;
 use App\Models\User;
 use App\Notifications\NewMessageNotification;
 use App\Notifications\NewResponseNotification;
@@ -23,7 +23,7 @@ class NotificationService
         $userForNotification = $this->notificationRepository->getUserForNotification($data->author_id ?: $data->user_id);
         
         switch(get_class($data)){
-            case ResponseModel::class: 
+            case Response::class: 
                 $userForNotification->notify(new NewResponseNotification($data));
                 break;
             case Message::class:

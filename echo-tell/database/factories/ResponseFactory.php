@@ -8,7 +8,7 @@ use Faker\Factory as Faker;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class ResponseModelFactory extends Factory
+class ResponseFactory extends Factory
 {
     /**
      * Define the model's default state.

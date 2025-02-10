@@ -1,41 +1,46 @@
 <template>
-    <div class="responses-container">
+    <div class="sidebar">
+        <div class="filter-buttons">
+            <button
+                @click="loadInteractions('responses')"
+                :class="{ active: filterType === 'responses' }"
+            >
+                Responses
+            </button>
+            <button
+                @click="loadInteractions('messages')"
+                :class="{ active: filterType === 'messages' }"
+            >
+                Messages
+            </button>
+        </div>
+    </div>
+
+    <div class="interactions-container">
         <div
-            v-for="(item, index) in responses"
-            :key="index"
-            class="response-card"
+            v-for="item in interactions"
+            :key="item.id"
+            class="interaction-card"
         >
             <div class="card-header">
-                <div class="name-visibility">
-                    <p>
-                        <strong>Name visibility:</strong>
-                        {{
-                            item.name_visibility === 0
-                                ? "Hidden"
-                                : "Visible"
-                        }}
-                    </p>
-                </div>
+                <p>
+                    <strong>Name visibility:</strong>
+                    {{ item.name_visibility === 0 ? "Hidden" : "Visible" }}
+                </p>
             </div>
             <div class="card-body">
-                <div v-if="item.type === 'response'">
-                    <p>
-                        <strong>Question:</strong>
-                        {{ getQuestionSnippet(item.question) }}
-                    </p>
-                    <p><strong>Response:</strong> {{ item.response }}</p>
-                </div>
+                <template v-if="item.type === 'response'">
+                    <p><strong>Question:</strong> {{ getQuestionSnippet(item.question) }}</p>
+                    <p><strong>Response:</strong> {{ item.text }}</p>
+                </template>
 
-                <div v-else-if="item.type === 'message'">
-                    <p><strong>Message:</strong> {{ item.message }}</p>
-                    <p><strong>User:</strong> {{ item.user }}</p>
-                </div>
+                <template v-else-if="item.type === 'message'">
+                    <p><strong>Message:</strong> {{ item.text }}</p>
+                    <p><strong>Sender:</strong> {{ item.sender_name }}</p>
+                </template>
 
                 <div class="card-footer">
-                    <button
-                        class="delete-btn"
-                        @click="deleteContent(item.id)"
-                    >
+                    <button class="delete-btn" @click="deleteContent(item.id)">
                         Delete
                     </button>
                     <span class="time-ago">{{ formatTime(item.created_at) }}</span>
@@ -43,130 +48,164 @@
             </div>
         </div>
     </div>
+
+    <div class="pagination" v-if="meta">
+        <button
+            @click="loadPage(meta.current_page - 1)"
+            :disabled="meta.current_page === 1"
+        >
+            « Prev
+        </button>
+
+        <button
+            v-for="link in meta.links"
+            :key="link.label"
+            @click="loadPage(link.url)"
+            :class="{ active: link.active }"
+            v-if="link && link.url"
+        >
+            {{ link.label }}
+        </button>
+
+        <button
+            @click="loadPage(meta.current_page + 1)"
+            :disabled="meta.current_page === meta.last_page"
+        >
+            Next »
+        </button>
+    </div>
 </template>
 
-
-
 <script>
+import axios from "axios";
+
 export default {
     data() {
         return {
-            responses: [], // Містить як відповіді, так і повідомлення
+            interactions: [],
+            filterType: "responses",
+            meta: null,
         };
     },
     methods: {
-    getResponses() {
-        axios
-            .get("/api/user/interactions")
-            .then((response) => {
-                this.responses = Object.values(response.data).map((item) => {
-                    if (item.type === 'message') {
-                        item.user = item.user || "Anonymous"; 
-                    } else if (item.type === 'response') {
-                        item.user = item.user_name || "Anonymous"; 
-                    }
-                    return item;
-                });
-                console.log(this.responses);
-            })
-            .catch((error) => {
-                console.error("Error fetching responses:", error);
-            });
-    },
-    formatTime(date) {
-        const timeAgo = new Date(date);
-        const now = new Date();
-        const diff = Math.floor((now - timeAgo) / (1000 * 60));
-        if (diff < 60) {
-            return `${diff} minutes ago`;
-        } else if (diff < 1440) {
-            return `${Math.floor(diff / 60)} hours ago`;
-        } else {
-            return `${Math.floor(diff / 1440)} days ago`;
-        }
-    },
-    getQuestionSnippet(question) {
-        return question.length > 200 ? question.slice(0, 200) + "..." : question;
-    },
-    deleteContent(responseId) {
-    const contentToDelete = this.responses.find(
-        (item) => item.id === responseId
-    );
+        async loadInteractions(type, page = 1) {
+            this.filterType = type;
+            try {
+                const res = await axios.get(`/api/user/${this.filterType}?page=${page}`);
+                const data = res.data.data;
 
-    if (contentToDelete) {
-        axios
-            .delete(`/api/content/${responseId}`)
-            .then((response) => {
+                this.interactions = data;
+                this.meta = res.data.meta || null;
+            } catch (error) {
+                console.error(`Error fetching ${type}:`, error);
+            }
+        },
+        async deleteContent(id) {
+            try {
+                const response = await axios.delete(`/api/content/${id}`);
                 if (response.status === 200) {
-                    this.responses = this.responses.filter(
-                        (item) => item.id !== responseId
+                    this.interactions = this.interactions.filter(
+                        (item) => item.id !== id
                     );
-                } else {
-                    console.error(response.status);
                 }
-            })
-            .catch((error) => {
-                console.error("Error deleting content:", error);
-            });
-    }
-}
+            } catch (error) {
+                console.error(`Error deleting content:`, error);
+            }
+        },
+        formatTime(date) {
+            const timeAgo = new Date(date);
+            const now = new Date();
+            const diff = Math.floor((now - timeAgo) / (1000 * 60));
 
-},
-
+            if (diff < 60) return `${diff} minutes ago`;
+            if (diff < 1440) return `${Math.floor(diff / 60)} hours ago`;
+            return `${Math.floor(diff / 1440)} days ago`;
+        },
+        getQuestionSnippet(question) {
+            return question?.length > 200 ? `${question.slice(0, 200)}...` : question;
+        },
+        loadPage(page) {
+            if (page > 0 && page <= this.meta.last_page) {
+                this.loadInteractions(this.filterType, page);
+            }
+        },
+    },
     mounted() {
-        this.getResponses(); 
+        this.loadInteractions(this.filterType);
     },
 };
 </script>
 
 <style scoped>
-.responses-container {
+/* Фільтри кнопок */
+.filter-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filter-buttons button {
+    padding: 8px 15px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    background-color: #bdc3c7;
+    color: white;
+    border-radius: 5px;
+    transition: 0.3s;
+    min-width: 120px;
+    height: 40px;
+}
+
+.filter-buttons button:hover {
+    background-color: #95a5a6;
+}
+
+.filter-buttons .active {
+    background-color: #3498db;
+    font-weight: bold;
+}
+
+/* Контейнер для інтерекцій */
+.interactions-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 30px;
     margin: 40px;
 }
 
-.response-card {
+/* Карточки */
+.interaction-card {
     background: linear-gradient(135deg, #ffffff, #f4f7fc);
     border-radius: 18px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.4s ease, box-shadow 0.3s ease,
-        background-color 0.4s ease, border 0.3s ease;
-    position: relative;
+    transition: 0.4s ease;
     cursor: pointer;
-    border-left: 8px solid transparent;
+    height: 350px;
     display: flex;
     flex-direction: column;
-    height: 350px; 
 }
 
-.response-card:hover {
-    transform: translateY(-15px) scale(1.05);
+.interaction-card:hover {
+    transform: translateY(-5px);
     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
-    background-color: #f1f3f6;
-    border-left-color: #4caf50;
 }
 
 .card-header {
     background-color: #2c3e50;
     color: #ecf0f1;
     padding: 20px;
-    border-bottom: 2px solid #4caf50;
     text-align: center;
     border-radius: 18px 18px 0 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
 }
 
 .card-body {
-    padding: 20px 25px;
+    padding: 20px;
     color: #34495e;
     font-size: 1.1rem;
-    overflow-y: auto; 
+    overflow-y: auto;
 }
 
 .card-body p {
@@ -174,50 +213,63 @@ export default {
     line-height: 1.8;
 }
 
-.card-body strong {
-    color: #2c3e50;
-}
-
+/* Футер */
 .card-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
     padding: 10px 0;
     border-top: 1px solid #ddd;
     flex-shrink: 0;
 }
 
-.card-footer .delete-btn {
+/* Кнопка видалення */
+.delete-btn {
     background-color: #e74c3c;
     color: white;
     border: none;
     padding: 8px 15px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: 0.3s ease;
 }
 
-.card-footer .delete-btn:hover {
+.delete-btn:hover {
     background-color: #c0392b;
 }
 
-.card-footer .time-ago {
+/* Текст часу */
+.time-ago {
     font-size: 0.9rem;
     color: #7f8c8d;
     font-style: italic;
 }
 
-.card-footer .time-ago::before {
-    content: "• ";
+/* Пагінація */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
 }
 
-@media (max-width: 768px) {
-    .card-header .user-details h3 {
-        font-size: 1.6rem;
-    }
-    .card-body p {
-        font-size: 1rem;
-    }
+.pagination button {
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    background-color: #bdc3c7;
+    color: white;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.pagination button.active {
+    background-color: #3498db;
+    font-weight: bold;
+}
+
+.pagination button:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
 }
 </style>

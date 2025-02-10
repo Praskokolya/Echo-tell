@@ -1,54 +1,94 @@
 <template>
     <div class="questions-container">
-        <h1 class="title">Questions by {{ questions[0]?.user_name }}</h1>
+        <h1 class="title">Questions by {{ questions.data[0]?.user_name || 'Unknown User' }}</h1>
         <div class="question-cards">
             <div
-                v-for="question in questions"
+                v-for="question in questions.data"
                 :key="question.id"
                 class="question-card"
             >
                 <div class="question-header">
                     <h3 class="question-title">{{ question.question }}</h3>
-                    <small class="created-at">{{
-                        new Date(question.created_at).toLocaleString()
-                    }}</small>
+                    <small class="created-at">{{ formatDate(question.created_at) }}</small>
                 </div>
                 <div class="question-footer">
                     <a
                         :href="question.question_url"
                         target="_blank"
                         class="view-button"
-                        >View</a
-                    >
-                    <a  :href="question.question_url + '/responses'">
+                    >View</a>
+                    <a :href="question.question_url + '/responses'">
                         <p class="responses-count">
                             {{ question.responses_count }} responses
-                        </p></a
-                    >
+                        </p>
+                    </a>
                 </div>
             </div>
+        </div>
+
+        <!-- Pagination -->
+        <div v-if="pagination.total > 1" class="pagination">
+            <button
+                :disabled="pagination.current_page === 1"
+                @click="changePage(pagination.current_page - 1)"
+                class="pagination-button"
+            >
+                Previous
+            </button>
+            <span class="pagination-info">
+                Page {{ pagination.current_page }} of {{ pagination.last_page }}
+            </span>
+            <button
+                :disabled="pagination.current_page === pagination.last_page"
+                @click="changePage(pagination.current_page + 1)"
+                class="pagination-button"
+            >
+                Next
+            </button>
         </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
-            questions: [],
+            questions: {
+                data: [],
+                current_page: 1,
+                last_page: 1,
+                total: 0,
+            },
+            pagination: {
+                current_page: 1,
+                last_page: 1,
+                total: 0,
+            },
         };
     },
     methods: {
-        getAllQuestions() {
+        getAllQuestions(page = 1) {
             axios
-                .get("/api/user/questions")
+                .get(`/api/user/questions?page=${page}`)
                 .then((response) => {
-                    this.questions = response.data.data;
+                    this.questions = response.data;
+                    this.pagination = response.data.meta;
                 })
                 .catch((error) => {
-                    console.error("Error fetching questions:", error);
+                    console.error('Error fetching questions:', error);
                 });
         },
+        changePage(page) {
+            if (page > 0 && page <= this.pagination.last_page) {
+                this.getAllQuestions(page);
+            }
+        },
+        formatDate(date) {
+            const d = new Date(date);
+            return d.toLocaleString();
+        }
     },
     mounted() {
         this.getAllQuestions();
@@ -148,9 +188,36 @@ export default {
     color: #95a5a6;
 }
 
-@media (max-width: 768px) {
-    .question-cards {
-        grid-template-columns: 1fr;
-    }
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    align-items: center;
+}
+
+.pagination-button {
+    background-color: #5e81ac;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination-button:hover {
+    background-color: #4c6b96;
+}
+
+.pagination-button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+.pagination-info {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
 }
 </style>

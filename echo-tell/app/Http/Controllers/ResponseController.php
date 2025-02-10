@@ -39,11 +39,9 @@ class ResponseController extends Controller
         $this->responseRepository->createResponse($request, $id);
     }
 
-    public function returnInteractions()
+    public function returnResponses()
     {
-        $responses = ResponseResource::collection($this->responseRepository->getAll());
-        $messages = MessagesResource::collection($this->messageRepository->getAll());
-        return $responses->concat($messages)->sortByDesc('created_at');
+        return ResponseResource::collection($this->responseRepository->getAll());
     }
 
     public function deleteContent($id)

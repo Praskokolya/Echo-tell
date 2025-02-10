@@ -17,12 +17,21 @@
                         @mouseover="showNotificationsMenu"
                         @mouseleave="hideNotificationsMenu"
                     >
-                        <a href="/notifications">Notifications</a>
-                        <span
-                            v-if="notificationCount > 0"
-                            class="notification-badge"
-                            >{{ notificationCount }}</span
-                        >
+                        <a href="/notifications">
+                            <span
+                                @mouseover="hideIndicator"
+                                >Notifications</span
+                            >
+                            <div
+                                v-if="
+                                    notificationCount > 0 && !indicatorVisible
+                                "
+                                class="notification-indicator"
+                            >
+                                !
+                            </div>
+                        </a>
+
                         <div v-if="showMenu" class="notifications-dropdown">
                             <ul>
                                 <li
@@ -44,6 +53,12 @@
                                     </a>
                                 </li>
                             </ul>
+                            <p
+                                v-if="notifications.length === 0"
+                                class="no-notifications"
+                            >
+                                No new notifications.
+                            </p>
                         </div>
                     </li>
                     <li>
@@ -67,14 +82,19 @@ window.Pusher = Pusher;
 export default {
     data() {
         return {
+            // indicatorVisible: '',
             isMenuOpen: false,
             notificationCount: 0,
             notifications:
                 JSON.parse(localStorage.getItem("notifications")) || [],
             showMenu: false,
+            showIndicator: true,
         };
     },
     methods: {
+        hideIndicator() {
+            this.indicatorVisible = true;
+        },
         toggleMenu() {
             this.isMenuOpen = !this.isMenuOpen;
         },
@@ -115,7 +135,7 @@ export default {
                     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
                     forceTLS: true,
                     encrypted: true,
-                    authEndpoint: "/broadcasting/auth", 
+                    authEndpoint: "/broadcasting/auth",
                     auth: {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem(
@@ -132,9 +152,21 @@ export default {
                         this.notifications.push(...data.response);
                         this.limitNotifications();
                         this.updateLocalStorage();
+
+                        this.isNotificationVisible = true;
+
+                        setTimeout(() => {
+                            this.isNotificationVisible = false;
+                        }, 2000);
                     }
                 );
             }
+        },
+        hideNotificationIndicator() {
+            this.showIndicator = false;
+        },
+        showNotificationIndicator() {
+            this.showIndicator = true;
         },
     },
     mounted() {
@@ -142,6 +174,7 @@ export default {
     },
 };
 </script>
+
 <style scoped>
 .nav {
     background-color: #fff;
@@ -153,7 +186,6 @@ export default {
     z-index: 1000;
     border-bottom: 1px solid #ddd;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    height: 60px;
 }
 
 .nav-container {
@@ -191,6 +223,19 @@ export default {
     color: #5e81ac;
 }
 
+.notification-indicator {
+    background-color: red;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 30%;
+    padding: 2px 10px;
+    margin-left: 8px;
+    display: inline-block;
+    text-align: center;
+    transition: opacity 0.3s ease-in-out;
+}
+
 .notification-card {
     cursor: pointer;
     border: 1px solid #ddd;
@@ -216,6 +261,7 @@ export default {
 }
 
 .notification-body {
+    margin-top: 10px;
     font-size: 14px;
     color: #333;
     line-height: 1.5;
@@ -233,6 +279,7 @@ export default {
 .notification-card:active {
     background-color: #d0e3ff;
 }
+
 .notifications-dropdown {
     position: absolute;
     top: 55%;
@@ -249,6 +296,13 @@ export default {
     flex-direction: column;
     justify-content: flex-end;
     margin-top: 10px;
+}
+
+.no-notifications {
+    color: #888;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 20px;
 }
 
 @media (max-width: 768px) {
