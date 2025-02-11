@@ -11,9 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('questions', function (Blueprint $table) {
-            $table->string('slug')->after('question');
+        // Schema::dropIfExists('settings');
+
+        Schema::create('settings', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->onDelete('cascade')->constrained();
+            $table->boolean('email_notifications_enabled')->default(false);
+            $table->boolean('daily_mails_enabled')->default(false);
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -22,8 +28,5 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('question', function (Blueprint $table) {
-            //
-        });
     }
 };

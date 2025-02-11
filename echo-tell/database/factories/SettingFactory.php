@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Message>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Setting>
  */
-class MessageFactory extends Factory
+class SettingFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,10 +18,8 @@ class MessageFactory extends Factory
     {
         return [
             'user_id' => 1,
-            'message' => 'hello world',
-            'sender_name' => 'USER',
-            'sender_id' => 10,
-            'name_visibility' => 1
+            'daily_mails_enabled' => false,
+            'email_notifications_enabled' => true
         ];
     }
 }

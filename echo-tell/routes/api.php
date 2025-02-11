@@ -19,11 +19,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('question/responses/{id}', [QuestionController::class, 'returnQuestionResponses']);
     Route::get('user/messages', [MessagesController::class, 'returnMessages']);
     Route::get('user/responses', [ResponseController::class, 'returnResponses']);
-
     Route::post('response/{id}', [ResponseController::class, 'createResponse']);
-
     Route::delete('content/{id}', [ResponseController::class, 'deleteContent']);
-
     Route::get('response/{id}', [ResponseController::class, 'returnResponse']);
     Route::get('user/questions', [QuestionController::class, 'returnQuestions']);
     Route::get('notifications', [NotificationController::class, 'returnNotifications']);
