@@ -46,4 +46,7 @@ class MessageRepository
             ->latest()
             ->paginate(self::MESSAGES_PER_PAGE);
     }
+    public function delete($id){
+        $this->message->destroy($id);
+    }
 }

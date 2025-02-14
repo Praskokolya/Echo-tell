@@ -13,9 +13,14 @@ class MessageStrategy implements VerificationInterface
     {
         $message = Message::find($id);
 
-        if (Auth::user()->id == $message->user_id || Auth::id() == $message->sender_id) {
+        if(request()->isMethod('delete') and Auth::user()->id != $message->sender_id){
+            return 0;
+        }
+
+        if (Auth::id() == $message->user_id || Auth::id() == $message->sender_id) {
             return 1;
         }
+
         return 0;
     }
 }

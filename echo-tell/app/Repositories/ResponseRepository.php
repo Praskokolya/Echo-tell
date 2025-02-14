@@ -33,7 +33,7 @@ class ResponseRepository
         ]);
     }
     
-    public function deleteResponse($id){
+    public function delete($id){
         $this->response->destroy($id);
     }
 

@@ -30,20 +30,25 @@
             </div>
             <div class="card-body">
                 <template v-if="item.type === 'response'">
-                    <p><strong>Question:</strong> {{ getQuestionSnippet(item.question) }}</p>
-                    <p><strong>Response:</strong> {{ item.text }}</p>
+                    <p>
+                        <strong>Question:</strong>
+                        {{ getQuestionSnippet(item.question) }}
+                    </p>
+                    <p><strong>Response:</strong> {{ item.response }}</p>
                 </template>
 
                 <template v-else-if="item.type === 'message'">
-                    <p><strong>Message:</strong> {{ item.text }}</p>
+                    <p><strong>Message:</strong> {{ item.message }}</p>
                     <p><strong>Sender:</strong> {{ item.sender_name }}</p>
                 </template>
 
                 <div class="card-footer">
-                    <button class="delete-btn" @click="deleteContent(item.id)">
+                    <button class="delete-btn" @click="deleteItem(item.id, item.type)">
                         Delete
                     </button>
-                    <span class="time-ago">{{ formatTime(item.created_at) }}</span>
+                    <span class="time-ago">{{
+                        formatTime(item.created_at)
+                    }}</span>
                 </div>
             </div>
         </div>
@@ -91,7 +96,9 @@ export default {
         async loadInteractions(type, page = 1) {
             this.filterType = type;
             try {
-                const res = await axios.get(`/api/user/${this.filterType}?page=${page}`);
+                const res = await axios.get(
+                    `/api/user/${this.filterType}?page=${page}`
+                );
                 const data = res.data.data;
 
                 this.interactions = data;
@@ -100,16 +107,25 @@ export default {
                 console.error(`Error fetching ${type}:`, error);
             }
         },
-        async deleteContent(id) {
+        async deleteItem(id, type) {
             try {
-                const response = await axios.delete(`/api/content/${id}`);
+                let url = "";
+
+                if (type === "message") {
+                    url = `/api/message/${id}`;
+                } else if (type === "response") {
+                    url = `/api/response/${id}`;
+                }
+
+                const response = await axios.delete(url);
+
                 if (response.status === 200) {
                     this.interactions = this.interactions.filter(
                         (item) => item.id !== id
                     );
                 }
             } catch (error) {
-                console.error(`Error deleting content:`, error);
+                console.error(`Error deleting ${type}:`, error);
             }
         },
         formatTime(date) {
@@ -122,7 +138,9 @@ export default {
             return `${Math.floor(diff / 1440)} days ago`;
         },
         getQuestionSnippet(question) {
-            return question?.length > 200 ? `${question.slice(0, 200)}...` : question;
+            return question?.length > 200
+                ? `${question.slice(0, 200)}...`
+                : question;
         },
         loadPage(page) {
             if (page > 0 && page <= this.meta.last_page) {
@@ -223,7 +241,6 @@ export default {
     flex-shrink: 0;
 }
 
-/* Кнопка видалення */
 .delete-btn {
     background-color: #e74c3c;
     color: white;
@@ -238,7 +255,6 @@ export default {
     background-color: #c0392b;
 }
 
-/* Текст часу */
 .time-ago {
     font-size: 0.9rem;
     color: #7f8c8d;

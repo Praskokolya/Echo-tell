@@ -19,7 +19,7 @@ class ResponseFactory extends Factory
     {
         return [
             'response' => fake()->text(),
-            'author_id' => 8,
+            'author_id' => 1,
             'question_id' => 10,
             'user_name' => 'dude',
             'user_id' => 9,

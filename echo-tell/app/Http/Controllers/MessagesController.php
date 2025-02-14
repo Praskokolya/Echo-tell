@@ -33,5 +33,8 @@ class MessagesController extends Controller
     {
         $this->messageRepository->createMessage($request->all());
     }
+    public function deleteMessage($id){
+        $this->messageRepository->delete($id);
+    }
     
 }

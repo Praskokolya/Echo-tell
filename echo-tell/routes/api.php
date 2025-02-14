@@ -20,7 +20,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('user/messages', [MessagesController::class, 'returnMessages']);
     Route::get('user/responses', [ResponseController::class, 'returnResponses']);
     Route::post('response/{id}', [ResponseController::class, 'createResponse']);
-    Route::delete('content/{id}', [ResponseController::class, 'deleteContent']);
+    Route::delete('response/{id}', [ResponseController::class, 'deleteResponse']);
+    Route::delete('message/{id}', [MessagesController::class, 'deleteMessage'])->middleware([EnsureUserIsAuthor::class . ':message']);
+
     Route::get('response/{id}', [ResponseController::class, 'returnResponse']);
     Route::get('user/questions', [QuestionController::class, 'returnQuestions']);
     Route::get('notifications', [NotificationController::class, 'returnNotifications']);
@@ -28,7 +30,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('message/{user_name}', [MessagesController::class, 'createMessage']);
     Route::get('user/{user_name}', [ProfileController::class, 'returnUser']);
     Route::get('message/{id}', [MessagesController::class, 'returnMessage'])->middleware([EnsureUserIsAuthor::class . ':message']);
-    Route::get('messages/{id}', [MessagesController::class, 'returnMessagesFromUser'])->middleware([EnsureUserIsAuthor::class . ':message']);;
+    Route::get('messages/{id}', [MessagesController::class, 'returnMessagesFromUser'])->middleware([EnsureUserIsAuthor::class . ':message']);
 });
 
 Route::get('/question/{id}', [QuestionController::class, 'returnData']);

@@ -44,9 +44,9 @@ class ResponseController extends Controller
         return ResponseResource::collection($this->responseRepository->getAll());
     }
 
-    public function deleteContent($id)
+    public function deleteResponse($id)
     {
-        $this->responseRepository->deleteResponse($id);
+        $this->responseRepository->delete($id);
     }
 
     public function returnResponse($id)

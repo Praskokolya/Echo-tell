@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
             // SettingSeeder::class,
             // QuestionSeeder::class,
             // UserSeeder::class,
-            // ResponseSeeder::class,
-            MessageSeeder::class,
+            ResponseSeeder::class,
+            // MessageSeeder::class,
         ]);
     }
 }

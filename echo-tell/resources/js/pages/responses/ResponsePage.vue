@@ -10,7 +10,7 @@
 
       <div class="response-section">
         <h2 class="title">Response:</h2>
-        <p class="response-text">{{ response.text }}</p>
+        <p class="response-text">{{ response.response }}</p>
         <p class="response-meta">
           <strong>Responded by: </strong>
           <span v-if="response.user_name !== 'Anonymous'" 
