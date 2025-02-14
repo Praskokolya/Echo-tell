@@ -1,151 +1,331 @@
 <template>
-    <header class="header">
-      <!-- Logo Section -->
-      <div class="logo">
-        <router-link to="/" class="logo-link">
-          <img src="/images/logo.png" alt="App Logo" class="logo-img" />
-        </router-link>
-      </div>
-  
-      <!-- Navigation Menu -->
-      <nav class="nav">
-        <ul class="nav-list">
-          <li><router-link to="/" class="nav-item">Home</router-link></li>
-          <li><router-link to="/about" class="nav-item">About</router-link></li>
-          <li><router-link to="/contact" class="nav-item">Contact</router-link></li>
-        </ul>
-      </nav>
-  
-      <!-- User Profile Section (If authenticated) -->
-      <div class="user-profile">
-        <div v-if="user" class="user-info">
-          <img :src="user.avatar" alt="User Avatar" class="avatar" />
-          <span class="username">{{ user.name }}</span>
-        </div>
-        <div v-else class="login">
-          <router-link to="/login" class="login-link">Login</router-link>
-        </div>
-      </div>
+    <header>
+        <nav class="nav">
+            <div class="nav-container">
+                <a href="/home" class="brand">Echo tell</a>
+                <ul class="nav-menu" :class="{ active: isMenuOpen }">
+                    <li>
+                        <a href="/create/question" class="nav-item"
+                            >Create question</a
+                        >
+                    </li>
+                    <li>
+                        <a href="/questions" class="nav-item">Your questions</a>
+                    </li>
+                    <li
+                        class="nav-item"
+                        @mouseover="showNotificationsMenu"
+                        @mouseleave="hideNotificationsMenu"
+                    >
+                        <a href="/notifications">
+                            <span
+                                @mouseover="hideIndicator"
+                                >Notifications</span
+                            >
+                            <div
+                                v-if="
+                                    notificationCount > 0 && !indicatorVisible
+                                "
+                                class="notification-indicator"
+                            >
+                                !
+                            </div>
+                        </a>
+
+                        <div v-if="showMenu" class="notifications-dropdown">
+                            <ul>
+                                <li
+                                    v-for="(
+                                        notification, index
+                                    ) in notifications"
+                                    :key="index"
+                                    class="notification-card"
+                                >
+                                    <a :href="notification.url">
+                                        <div class="notification-header">
+                                            <strong>{{
+                                                notification.title
+                                            }}</strong>
+                                        </div>
+                                        <div class="notification-body">
+                                            {{ notification.message }}
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <p
+                                v-if="notifications.length === 0"
+                                class="no-notifications"
+                            >
+                                No new notifications.
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/user/interactions" class="nav-item"
+                            >Your interactions</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </header>
-  </template>
-  
-  <script>
-  export default {
+</template>
+
+<script>
+import Echo from "laravel-echo";
+import Pusher from "pusher-js";
+import axios from "axios";
+
+window.Pusher = Pusher;
+
+export default {
     data() {
-      return {
-        user: null, // Replace with real user data (if authenticated)
-      };
+        return {
+            // indicatorVisible: '',
+            isMenuOpen: false,
+            notificationCount: 0,
+            notifications:
+                JSON.parse(localStorage.getItem("notifications")) || [],
+            showMenu: false,
+            showIndicator: true,
+        };
     },
-    created() {
-      // You can use Vuex or a similar method to get the authenticated user
-      // For demonstration, we are using mock data.
-      this.user = {
-        name: "John Doe",
-        avatar: "/images/avatar.jpg", // Use the actual avatar URL
-      };
+    methods: {
+        hideIndicator() {
+            this.indicatorVisible = true;
+        },
+        toggleMenu() {
+            this.isMenuOpen = !this.isMenuOpen;
+        },
+        showNotificationsMenu() {
+            this.showMenu = true;
+        },
+        hideNotificationsMenu() {
+            this.showMenu = false;
+        },
+        updateLocalStorage() {
+            localStorage.setItem(
+                "notifications",
+                JSON.stringify(this.notifications)
+            );
+            this.notificationCount = this.notifications.length;
+        },
+        limitNotifications() {
+            if (this.notifications.length > 3) {
+                this.notifications = this.notifications.slice(-3);
+            }
+        },
+        fetchUserData() {
+            axios
+                .get("/api/user/user-data")
+                .then((response) => {
+                    this.userId = response.data.id;
+                    this.connectToChannel();
+                })
+                .catch((error) => {
+                    console.error("Error fetching user data:", error);
+                });
+        },
+        connectToChannel() {
+            if (this.userId) {
+                window.Echo = new Echo({
+                    broadcaster: "pusher",
+                    key: import.meta.env.VITE_PUSHER_APP_KEY,
+                    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+                    forceTLS: true,
+                    encrypted: true,
+                    authEndpoint: "/broadcasting/auth",
+                    auth: {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    },
+                });
+
+                window.Echo.private(`notification.` + this.userId).listen(
+                    "NewInteraction",
+                    (data) => {
+                        console.log("New response received:", data);
+                        this.notifications.push(...data.response);
+                        this.limitNotifications();
+                        this.updateLocalStorage();
+
+                        this.isNotificationVisible = true;
+
+                        setTimeout(() => {
+                            this.isNotificationVisible = false;
+                        }, 2000);
+                    }
+                );
+            }
+        },
+        hideNotificationIndicator() {
+            this.showIndicator = false;
+        },
+        showNotificationIndicator() {
+            this.showIndicator = true;
+        },
     },
-  };
-  </script>
-  
-  <style scoped>
-  /* General Styles */
-  .header {
+    mounted() {
+        this.fetchUserData();
+    },
+};
+</script>
+
+<style scoped>
+.nav {
+    background-color: #fff;
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
-    background-color: #2c3e50;
-    color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .logo-link {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo-img {
-    height: 40px;
-    width: auto;
-  }
-  
-  .nav {
-    flex-grow: 1;
-  }
-  
-  .nav-list {
-    display: flex;
-    justify-content: center;
+    position: relative;
+}
+
+.brand {
+    color: #333;
+    font-size: 24px;
+    text-decoration: none;
+}
+
+.nav-menu {
     list-style: none;
+    display: flex;
     margin: 0;
     padding: 0;
-  }
-  
-  .nav-item {
-    margin: 0 20px;
+}
+
+.nav-menu li {
+    margin-left: 20px;
+}
+
+.nav-item {
+    color: #333;
     text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.nav-item:hover {
+    color: #5e81ac;
+}
+
+.notification-indicator {
+    background-color: red;
     color: white;
+    font-size: 14px;
     font-weight: bold;
-    transition: color 0.3s;
-  }
-  
-  .nav-item:hover {
-    color: #3498db;
-  }
-  
-  .user-profile {
-    display: flex;
-    align-items: center;
-  }
-  
-  .user-info {
-    display: flex;
-    align-items: center;
-  }
-  
-  .avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .username {
+    border-radius: 30%;
+    padding: 2px 10px;
+    margin-left: 8px;
+    display: inline-block;
+    text-align: center;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.notification-card {
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.notification-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    background-color: #e9f2fe;
+}
+
+.notification-header {
     font-weight: bold;
-  }
-  
-  .login-link {
-    color: white;
+    font-size: 16px;
+    color: #5e81ac;
+    margin-bottom: 8px;
+}
+
+.notification-body {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.notification-card a {
     text-decoration: none;
+    color: inherit;
+}
+
+.notification-card a:hover {
+    text-decoration: underline;
+}
+
+.notification-card:active {
+    background-color: #d0e3ff;
+}
+
+.notifications-dropdown {
+    position: absolute;
+    top: 55%;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
     padding: 10px;
-    border-radius: 5px;
-    background-color: #3498db;
-    transition: background-color 0.3s;
-  }
-  
-  .login-link:hover {
-    background-color: #2980b9;
-  }
-  
-  /* Mobile Responsiveness */
-  @media (max-width: 768px) {
-    .header {
-      flex-direction: column;
-      text-align: center;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.no-notifications {
+    color: #888;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .nav-menu {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: #fff;
+        display: none;
+        flex-direction: column;
+        padding: 0;
+        border-top: 1px solid #ddd;
     }
-  
-    .nav-list {
-      flex-direction: column;
-      margin-top: 20px;
+
+    .nav-menu.active {
+        display: flex;
     }
-  
-    .nav-item {
-      margin: 10px 0;
+
+    .nav-menu li {
+        margin: 0;
+        padding: 10px 20px;
+        border-bottom: 1px solid #ddd;
     }
-  
-    .user-profile {
-      margin-top: 20px;
-    }
-  }
-  </style>
-  
+}
+</style>

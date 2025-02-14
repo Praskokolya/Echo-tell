@@ -1,4 +1,4 @@
-import 'bootstrap';
+import "bootstrap";
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -6,17 +6,22 @@ import 'bootstrap';
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-import axios from 'axios';
+import axios from "axios";
 window.axios = axios;
 
 const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
 if (csrfTokenMeta) {
-    const csrfToken = csrfTokenMeta.getAttribute('content');
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+    const csrfToken = csrfTokenMeta.getAttribute("content");
+    axios.defaults.headers.common["X-CSRF-TOKEN"] = csrfToken;
 } else {
-    console.error('CSRF token meta tag not found!');
+    console.error("CSRF token meta tag not found!");
 }
-
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
+const accessToken = localStorage.getItem("access_token");
+if (accessToken) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+}
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

@@ -4,10 +4,9 @@ namespace App\Repositories;
 
 use App\Jobs\SendEmailJob;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use App\Services\MailService;
-use Auth;
-use Cache;
-use Session;
+use Illuminate\Support\Facades\Session;
 
 class UserRepository
 {
@@ -24,13 +23,14 @@ class UserRepository
     }
     public function login(array $data)
     {
-        $data['password'] = bcrypt($data['password']);
         $user = $this->user
             ->where($data)
             ->first();
         if($user){
+            Auth::logout();
             Auth::login($user);
-            return true;
+            $token = $user->createToken('authToken')->plainTextToken;
+            return $token;
         }else{
             return false;
         }

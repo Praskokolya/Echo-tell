@@ -12,9 +12,11 @@ use Illuminate\Support\Facades\Session;
 class UserService
 {
     protected $userRepository;
+
     public function __construct(UserRepository $userRepository) {
         $this->userRepository = $userRepository;
     }
+
     protected function generateCode()
     {
         $code = random_int(100000, 999999);
@@ -27,7 +29,7 @@ class UserService
     }
     protected function sendCode($mail)
     {
-        self::generateCode();
+        $this->generateCode();
         Mail::to($mail)->queue(new SendCodeMail());
     }
     public function compareCode($enteredCode)

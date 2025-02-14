@@ -6,12 +6,23 @@
             <form>
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input v-model="form.email" type="email" id="email" required placeholder="Enter your email" />
+                    <input
+                        v-model="form.email"
+                        type="email"
+                        id="email"
+                        required
+                        placeholder="Enter your email"
+                    />
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input v-model="form.password" type="password" id="password" required
-                        placeholder="Enter your password" />
+                    <input
+                        v-model="form.password"
+                        type="password"
+                        id="password"
+                        required
+                        placeholder="Enter your password"
+                    />
                 </div>
 
                 <div class="form-footer">
@@ -21,7 +32,12 @@
 
                     <div class="auth-footer">
                         <p>
-                            Don't have an account? <span><a href="auth/registration">Create one</a></span>
+                            Don't have an account?
+                            <span
+                                ><a href="auth/registration"
+                                    >Create one</a
+                                ></span
+                            >
                         </p>
                     </div>
                 </div>
@@ -32,8 +48,12 @@
                     <span class="social-btn google" @click="signInWithGoogle">
                         <i class="fab fa-google"></i> <a href="/">Google</a>
                     </span>
-                    <span class="social-btn facebook" @click="signInWithFacebook">
-                        <i class="fab fa-facebook-f"></i> <a href="/">Facebook</a>
+                    <span
+                        class="social-btn facebook"
+                        @click="signInWithFacebook"
+                    >
+                        <i class="fab fa-facebook-f"></i>
+                        <a href="/">Facebook</a>
                     </span>
                 </div>
             </div>
@@ -46,29 +66,32 @@ export default {
     data() {
         return {
             form: {
-                email: '',
-                password: ''
-            }
+                email: "",
+                password: "",
+            },
         };
     },
     methods: {
-        logIn(){
-            axios.post('auth/login', this.form);
+        logIn() {
+            axios.post("/auth/login", this.form).then((response) => {
+                if(response.data.access_token){
+                    console.log('Bearer ' + response.data.access_token);
+                    localStorage.setItem("access_token", response.data.access_token);
+                    window.location.href = "/";
+                } 
+            });
         },
-        signInWithGoogle() {
-        },
-        signInWithFacebook() {
-        }
-    }
+        signInWithGoogle() {},
+        signInWithFacebook() {},
+    },
 };
 </script>
 
 <style scoped>
-
 .main-title {
     font-size: 30rem;
     font-weight: bold;
-    color: #4A90E2;
+    color: #4a90e2;
     margin-bottom: 10px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }

@@ -19,7 +19,6 @@ class UserStoringDataJob implements ShouldQueue
         $this->userData = $userData; 
     }
 
-
     /**
      * Execute the job.
      */
