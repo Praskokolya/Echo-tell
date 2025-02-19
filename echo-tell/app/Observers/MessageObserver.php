@@ -11,12 +11,11 @@ use Illuminate\Support\Facades\Log;
 
 class MessageObserver
 {
-    public function __construct(public NotificationService $notificationService )
+    public function __construct(public NotificationService $notificationService) {}
+
+    public function created(Message $message)
     {
-        
-    }
-    
-    public function created(Message $message){
-        $this->notificationService->createUserNotification($message);
+        $this->notificationService
+            ->createUserNotification($message);
     }
 }

@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists("messages");
         Schema::create('messages', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->integer('user_id');

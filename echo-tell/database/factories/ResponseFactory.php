@@ -20,10 +20,10 @@ class ResponseFactory extends Factory
         return [
             'response' => fake()->text(),
             'author_id' => 1,
-            'question_id' => 10,
+            'question_id' => 1,
             'user_name' => 'dude',
-            'user_id' => 9,
-            'name_visibility' => 0,
+            'user_id' => 1,
+            'name_visibility' => 1,
         ];
     }
 }

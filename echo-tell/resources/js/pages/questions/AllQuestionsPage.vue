@@ -1,7 +1,10 @@
 <template>
     <div class="questions-container">
-        <h1 class="title">Questions by {{ questions.data[0]?.user_name || 'Unknown User' }}</h1>
-        <div class="question-cards">
+        <h1 class="title">All questions created by you</h1>
+        <div v-if="questions.data.length === 0" class="no-questions">
+            <p>No questions available</p>
+        </div>
+        <div v-else class="question-cards">
             <div
                 v-for="question in questions.data"
                 :key="question.id"
@@ -9,14 +12,24 @@
             >
                 <div class="question-header">
                     <h3 class="question-title">{{ question.question }}</h3>
-                    <small class="created-at">{{ formatDate(question.created_at) }}</small>
+                    <small class="created-at">{{
+                        formatDate(question.created_at)
+                    }}</small>
                 </div>
                 <div class="question-footer">
                     <a
                         :href="question.question_url"
                         target="_blank"
                         class="view-button"
-                    >View</a>
+                        >View</a
+                    >
+                    <button
+                        @click="deleteQuestion(question.id)"
+                        class="delete-button"
+                    >
+                        Delete
+                    </button>
+
                     <a :href="question.question_url + '/responses'">
                         <p class="responses-count">
                             {{ question.responses_count }} responses
@@ -50,7 +63,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
     data() {
@@ -69,6 +82,25 @@ export default {
         };
     },
     methods: {
+        deleteQuestion(id) {
+            let isConfirmed = confirm(
+                `Are you sure you want to delete question?`
+            );
+            if (isConfirmed) {
+                axios
+                    .delete(`api/question/${id}`)
+                    .then(() => {
+                        // Видалення питання з масиву після успішного запиту
+                        this.questions.data = this.questions.data.filter(
+                            (question) => question.id !== id
+                        );
+                    })
+                    .catch((error) => {
+                        console.error("Error deleting question:", error);
+                    });
+            }
+        },
+
         getAllQuestions(page = 1) {
             axios
                 .get(`/api/user/questions?page=${page}`)
@@ -77,7 +109,7 @@ export default {
                     this.pagination = response.data.meta;
                 })
                 .catch((error) => {
-                    console.error('Error fetching questions:', error);
+                    console.error("Error fetching questions:", error);
                 });
         },
         changePage(page) {
@@ -88,8 +120,9 @@ export default {
         formatDate(date) {
             const d = new Date(date);
             return d.toLocaleString();
-        }
+        },
     },
+
     mounted() {
         this.getAllQuestions();
     },
@@ -97,6 +130,34 @@ export default {
 </script>
 
 <style scoped>
+.no-questions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    font-size: 1.5rem;
+    color: #7f8c8d;
+    font-weight: 500;
+    /* text-align: center; */
+}
+
+.delete-button {
+    background-color: #e74c3c;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.delete-button:hover {
+    background-color: #c0392b;
+}
+
 .questions-container {
     max-width: 1000px;
     margin: 0 auto;

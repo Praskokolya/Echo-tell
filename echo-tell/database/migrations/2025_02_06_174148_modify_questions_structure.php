@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::table('responses', function (Blueprint $table) {
+            $table->dropForeign(['question_id']);
+        });
+        Schema::dropIfExists('questions');
 
         Schema::create('questions', function (Blueprint $table) {
             $table->id();

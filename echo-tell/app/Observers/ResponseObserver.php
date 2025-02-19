@@ -13,12 +13,11 @@ use Illuminate\Support\Facades\Log;
 
 class ResponseObserver
 {
-    public function __construct(public NotificationService $notificationService)
+    public function __construct(public NotificationService $notificationService) {}
+
+    public function created(Response $Response)
     {
-        
+        $this->notificationService
+            ->createUserNotification($Response);
     }
-    
-    public function created(Response $Response){
-        $this->notificationService->createUserNotification($Response);
-    } 
 }

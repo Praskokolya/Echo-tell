@@ -2,15 +2,9 @@
 
 namespace App\Notifications;
 
-use App\Mail\SendCodeMail;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class NewMessageNotification extends Notification
 {
@@ -18,38 +12,56 @@ class NewMessageNotification extends Notification
 
     /**
      * Create a new notification instance.
+     *
+     * @param object $messageData
      */
     public function __construct(public $messageData) {}
+
     /**
      * Get the notification's delivery channels.
      *
+     * @param object $notifiable
      * @return array<int, string>
      */
     public function via(object $notifiable): array
     {
-        if($notifiable->settings->email_notifications_enabled){
+        // If email notifications are enabled in the user's settings, send via database and mail
+        if ($notifiable->settings->email_notifications_enabled) {
             return ['database', 'mail'];
         }
+        
         return ['database'];
     }
 
+    /**
+     * Get the database notification representation.
+     *
+     * @return array
+     */
     public function toDatabase(): array
     {
         return [
             'url' => $this->messageData->url,
-            'message' => $this->messageData->sender_name . ' sent you a message'
+            'message' => $this->messageData->sender_name . ' sent you a message',
         ];
     }
 
+    /**
+     * Get the mail notification representation.
+     *
+     * @param object $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage|null
+     */
     public function toMail(object $notifiable)
     {
+        // Send the email notification only if email notifications are enabled
         if ($notifiable->settings->email_notifications_enabled) {
             return (new MailMessage)
                 ->subject('You got a new message!')
                 ->line('You have received a new message from ' . $this->messageData->sender_name)
                 ->action('View Message', $this->messageData->url);
-        } else {
-            return null;
         }
+
+        return null;
     }
 }

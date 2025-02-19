@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <div class="interactions-container">
+    <div class="interactions-container" v-if="interactions.length > 0">
         <div
             v-for="item in interactions"
             :key="item.id"
@@ -43,7 +43,10 @@
                 </template>
 
                 <div class="card-footer">
-                    <button class="delete-btn" @click="deleteItem(item.id, item.type)">
+                    <button
+                        class="delete-btn"
+                        @click="deleteItem(item.id, item.type)"
+                    >
                         Delete
                     </button>
                     <span class="time-ago">{{
@@ -52,6 +55,10 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div v-else class="no-interactions">
+        <p>You haven't interacted with anybody yet.</p>
     </div>
 
     <div class="pagination" v-if="meta">
@@ -95,6 +102,8 @@ export default {
     methods: {
         async loadInteractions(type, page = 1) {
             this.filterType = type;
+            this.interactions = [];
+
             try {
                 const res = await axios.get(
                     `/api/user/${this.filterType}?page=${page}`
@@ -287,5 +296,13 @@ export default {
 .pagination button:disabled {
     background-color: #95a5a6;
     cursor: not-allowed;
+}
+
+/* Повідомлення при відсутності інтеракцій */
+.no-interactions {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #7f8c8d;
 }
 </style>

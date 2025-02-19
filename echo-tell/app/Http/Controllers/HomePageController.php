@@ -2,21 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\QuestionResource;
 use App\Repositories\QuestionRepository;
-use GuzzleHttp\Psr7\Query;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\Console\Question\Question;
 
 class HomePageController extends Controller
 {
+    /**
+     * HomePageController constructor.
+     *
+     * @param QuestionRepository $questionRepository
+     */
     public function __construct(public QuestionRepository $questionRepository) 
     {
     }
-    public function getHomeData(){
-        return Auth::user();
+
+    /**
+     * Retrieve the authenticated user's data along with their settings.
+     *
+     * @return \App\Models\User
+     */
+    public function getData()
+    {
+        return Auth::user()->load('settings');
     }
+
+    /**
+     * Display the home page.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index()
     {
         return view('home.home-page');

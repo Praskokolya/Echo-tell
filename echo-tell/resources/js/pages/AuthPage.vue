@@ -26,9 +26,9 @@
                 </div>
 
                 <div class="form-footer">
-                    <button type="submit" class="submit-btn" @click="logIn">
+                    <div type="submit" class="submit-btn" @click="logIn">
                         Log In
-                    </button>
+                    </div>
 
                     <div class="auth-footer">
                         <p>
@@ -75,7 +75,6 @@ export default {
         logIn() {
             axios.post("/auth/login", this.form).then((response) => {
                 if(response.data.access_token){
-                    console.log('Bearer ' + response.data.access_token);
                     localStorage.setItem("access_token", response.data.access_token);
                     window.location.href = "/";
                 } 
@@ -146,6 +145,7 @@ input:focus {
 }
 
 .submit-btn {
+    text-align: center;
     width: 100%;
     padding: 12px;
     font-size: 16px;

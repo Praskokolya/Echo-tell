@@ -2,15 +2,9 @@
 
 namespace App\Notifications;
 
-use App\Events\NewResponse;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Broadcast;
-use Illuminate\Support\Facades\Log;
 
 class NewResponseNotification extends Notification
 {
@@ -18,27 +12,41 @@ class NewResponseNotification extends Notification
 
     /**
      * Create a new notification instance.
+     *
+     * @param object $responseData
      */
     public function __construct(public $responseData) {}
-  
-    private function getUrl(){
+
+    /**
+     * Get the URL of the response.
+     *
+     * @return string
+     */
+    private function getUrl()
+    {
         return $this->responseData->question->url . "/response/" . $this->responseData->id;
     }
 
     /**
      * Get the notification's delivery channels.
      *
+     * @param object $notifiable
      * @return array<int, string>
      */
     public function via(object $notifiable): array
     {
-        if($notifiable->settings->email_notifications_enabled){
+        // If email notifications are enabled, send via database and mail
+        if ($notifiable->settings->email_notifications_enabled) {
             return ["database", "mail"];
         }
+
         return ['database'];
     }
+
     /**
-     * Get the mail representation of the notification.
+     * Get the database representation of the notification.
+     *
+     * @return array
      */
     public function toDatabase()
     {
@@ -48,12 +56,22 @@ class NewResponseNotification extends Notification
         ];
     }
 
-    public function toMail($notifiable): MailMessage
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param object $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage|null
+     */
+    public function toMail($notifiable): ?MailMessage
     {
+        // Send the email notification only if email notifications are enabled
         if ($notifiable->settings->email_notifications_enabled) {
-            return (new MailMessage)->subject('You got a new message!')
+            return (new MailMessage)
+                ->subject('You got a new response!')
                 ->line($this->responseData->user_name . ' replied to your question')
-                ->action('View Message', $this->getUrl());
-        };
+                ->action('View Response', $this->getUrl());
+        }
+
+        return null;
     }
 }

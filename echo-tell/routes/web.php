@@ -44,4 +44,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('profile/{user_name}', [ProfileController::class, 'index']);
     Route::get('message/{id}', [MessagesController::class, 'index'])->middleware([EnsureUserIsAuthor::class. ':message'])->name('message');
     Route::get('messages/{id}', [MessagesController::class, 'messagesFromUser']);
+    Route::post('logout', function(){
+        Auth::logout();
+    });
 });

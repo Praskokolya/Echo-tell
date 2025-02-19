@@ -3,6 +3,7 @@
         <nav class="nav">
             <div class="nav-container">
                 <a href="/home" class="brand">Echo tell</a>
+                <button v-if="!isDesktop"@click="toggleMenu" class="menu-toggle">☰</button>
                 <ul class="nav-menu" :class="{ active: isMenuOpen }">
                     <li>
                         <a href="/create/question" class="nav-item"
@@ -18,14 +19,11 @@
                         @mouseleave="hideNotificationsMenu"
                     >
                         <a href="/notifications">
-                            <span
-                                @mouseover="hideIndicator"
+                            <span @mouseover="hideIndicator"
                                 >Notifications</span
                             >
                             <div
-                                v-if="
-                                    notificationCount > 0 && !indicatorVisible
-                                "
+                                v-if="showIndicator == 1"
                                 class="notification-indicator"
                             >
                                 !
@@ -82,18 +80,19 @@ window.Pusher = Pusher;
 export default {
     data() {
         return {
-            // indicatorVisible: '',
-            isMenuOpen: false,
+            isDesktop: window.innerWidth >= 1024,
             notificationCount: 0,
             notifications:
-                JSON.parse(localStorage.getItem("notifications")) || [],
+            JSON.parse(localStorage.getItem("notifications")) || [],
             showMenu: false,
-            showIndicator: true,
+            showIndicator: localStorage.getItem('showIndicator'),
         };
     },
     methods: {
         hideIndicator() {
-            this.indicatorVisible = true;
+            console.log(this.showIndicator)
+            this.showIndicator = 0
+            localStorage.setItem('showIndicator', 0)
         },
         toggleMenu() {
             this.isMenuOpen = !this.isMenuOpen;
@@ -117,6 +116,8 @@ export default {
             }
         },
         fetchUserData() {
+            console.log(this.showIndicator)
+
             axios
                 .get("/api/user/user-data")
                 .then((response) => {
@@ -148,11 +149,14 @@ export default {
                 window.Echo.private(`notification.` + this.userId).listen(
                     "NewInteraction",
                     (data) => {
+
                         console.log("New response received:", data);
                         this.notifications.push(...data.response);
                         this.limitNotifications();
                         this.updateLocalStorage();
 
+                        localStorage.setItem('showIndicator', 1)
+                        this.showIndicator = 1
                         this.isNotificationVisible = true;
 
                         setTimeout(() => {
@@ -307,14 +311,13 @@ export default {
 
 @media (max-width: 768px) {
     .nav-menu {
+        display: none;
+        flex-direction: column;
         position: absolute;
         top: 60px;
         left: 0;
         width: 100%;
         background-color: #fff;
-        display: none;
-        flex-direction: column;
-        padding: 0;
         border-top: 1px solid #ddd;
     }
 
@@ -323,9 +326,25 @@ export default {
     }
 
     .nav-menu li {
-        margin: 0;
-        padding: 10px 20px;
+        padding: 10px;
         border-bottom: 1px solid #ddd;
+    }
+
+    .menu-toggle {
+        display: block;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+    }
+
+    .menu-toggle {
+        font-size: 30px;
+        color: #333;
+    }
+
+    .menu-toggle:focus .menu-icon {
+        background-color: #5e81ac;
     }
 }
 </style>
