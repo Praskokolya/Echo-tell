@@ -2,15 +2,12 @@
 
 namespace App\Providers;
 
-use App\Interfaces\VerificationInterface;
 use App\Models\Message;
 use App\Models\Response;
 use App\Models\User;
 use App\Observers\MessageObserver;
-use App\Observers\NotificationObserver;
 use App\Observers\ResponseObserver;
 use App\Observers\UserObserver;
-use App\Services\VerificationService;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;

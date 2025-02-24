@@ -2,11 +2,8 @@
 
 namespace App\Services;
 
-use App\Mail\SendCodeMail;
 use App\Mail\StatisticMail;
-use App\Notifications\NewMessageNotification;
 use App\Repositories\SettingsRepository;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class SettingsService
@@ -14,7 +11,7 @@ class SettingsService
     public function __construct(public SettingsRepository $settingsRepository) {}
 
     /**
-     * If a parameter is not passed to the method, then the mail is sent to all users
+     * If a parameter is not passed to the method, then the mail is sending to all users
      *
      * @param [type] $user
      * @return void
@@ -24,7 +21,6 @@ class SettingsService
         $usersForMailing = $this->settingsRepository->getUsersForMail();
         
         if($user){
-            Log::info('bitch nigger');
             $usersForMailing = [$user];
         }
 

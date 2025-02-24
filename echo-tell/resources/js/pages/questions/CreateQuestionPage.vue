@@ -1,6 +1,6 @@
 <template>
     <div class="page-container">
-        <!-- Create Question Page -->
+
         <div class="create-question-page">
             <div class="header text-center">
                 <h1 class="display-3">Create Your Question</h1>
@@ -132,7 +132,7 @@ export default {
 }
 
 .btn-primary:hover {
-    background-color: #4c6a92; /* Darker blue */
+    background-color: #4c6a92;
     transform: translateY(-3px);
 }
 </style>

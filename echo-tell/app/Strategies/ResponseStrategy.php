@@ -10,7 +10,13 @@ class ResponseStrategy implements VerificationInterface
 {
     public function verify(mixed $id): int
     {
+        
         $response = Response::find($id);
+
+        if(request()->isMethod('delete') and Auth::user()->id != $response->author_id){
+            return 0;
+        }
+        
         if (Auth::id() == $response->author_id || Auth::id() == $response->user_id) {
             return 1;
         };

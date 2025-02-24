@@ -24,7 +24,7 @@ class SettingsRepository
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return int
      */
-    public function getDailyRecordCount($query)
+    private function getDailyRecordCount($query)
     {
         return $query->whereDate('created_at', Carbon::now()->today())->count();
     }

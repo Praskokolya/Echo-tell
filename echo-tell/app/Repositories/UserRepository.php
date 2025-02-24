@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Jobs\SendEmailJob;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Services\MailService;
@@ -19,9 +18,8 @@ class UserRepository
      * @param \App\Models\User $user
      * @param \App\Services\MailService $mailService
      */
-    public function __construct(User $user, MailService $mailService)
+    public function __construct(User $user)
     {
-        $this->mailService = $mailService;
         $this->user = $user;
     }
 

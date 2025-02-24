@@ -38,10 +38,10 @@ class MessagesController extends Controller
     /**
      * Retrieve messages from a specific user.
      *
-     * @param int $id
+     * @param string $id
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function returnMessagesFromUser($id)
+    public function returnMessagesFromUser(string $id)
     {
         return $this->messageRepository
             ->getMessagesFromUser($id);
@@ -62,10 +62,10 @@ class MessagesController extends Controller
     /**
      * Retrieve a single message by its ID.
      *
-     * @param int $id
+     * @param string $id
      * @return MessagesResource
      */
-    public function returnMessage($id)
+    public function returnMessage(string $id)
     {
         return new MessagesResource(
             $this->messageRepository->getMessage($id)

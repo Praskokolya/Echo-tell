@@ -1,6 +1,5 @@
 <template>
     <div class="container">
-        <!-- Question Title with explanation -->
         <h2 class="question-title">
             <span class="question-explanation">Your question:</span>
             {{ question.question }}

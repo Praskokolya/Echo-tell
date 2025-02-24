@@ -2,10 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Http\Resources\QuestionCollection;
-use App\Http\Resources\QuestionResource;
 use App\Models\Question;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 

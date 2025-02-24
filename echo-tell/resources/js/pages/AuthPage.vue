@@ -34,7 +34,7 @@
                         <p>
                             Don't have an account?
                             <span
-                                ><a href="auth/registration"
+                                ><a href="/auth/registration"
                                     >Create one</a
                                 ></span
                             >

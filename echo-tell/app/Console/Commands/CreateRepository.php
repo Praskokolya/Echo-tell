@@ -39,6 +39,6 @@ class CreateRepository extends Command
         $template = file_get_contents($templatePath);
         $template = str_replace('{RepositoryName}', $name, $template);
         File::put($filePath, $template);
-        $this->info('Repository created probably');
+        $this->info('Repository created');
     }
 }

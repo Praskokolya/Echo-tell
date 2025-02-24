@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -19,7 +18,7 @@ class SendCodeMail extends Mailable
      */
     public function __construct()
     {
-        //
+    
     }
 
     /**
@@ -38,7 +37,7 @@ class SendCodeMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail-code',
+            view: 'mails.mail-code',
             with: [
                 'code' => Cache::get('code')
             ]

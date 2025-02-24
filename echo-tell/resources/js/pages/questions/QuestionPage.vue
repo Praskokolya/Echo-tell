@@ -43,7 +43,6 @@
                         <small>{{ response.length }} / 200 characters</small>
                     </div>
 
-                    <!-- Перемикач для анонімності -->
                     <div class="form-group">
                         <label>
                             <input type="checkbox" v-model="name_visibility" />
@@ -83,7 +82,7 @@ export default {
                 axios.post(`/api/response/${this.id}`, data)
                     .then(() => {
                         console.log(data);
-                        // window.location.href = `/user/interactions`;
+                        window.location.href = `/user/interactions`;
                     });
             }
         },
@@ -230,7 +229,6 @@ export default {
     text-decoration: underline;
 }
 
-/* Простий стиль для перемикача */
 label input {
     margin-right: 10px;
 }

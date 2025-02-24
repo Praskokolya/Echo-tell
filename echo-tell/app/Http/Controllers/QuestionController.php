@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\QuestionCollection;
 use App\Http\Resources\QuestionResource;
 use App\Http\Resources\QuestionsResource;
-use App\Http\Resources\ResponseResource;
 use App\Repositories\QuestionRepository;
 use Illuminate\Http\Request;
 

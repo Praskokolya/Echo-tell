@@ -35,6 +35,6 @@ class CreateService extends Command
         $template = file_get_contents($template);
         $template = str_replace('{ServiceName}', $name, $template);
         File::put($filePath, $template);
-        $this->info('Service created probably');
+        $this->info('Service created');
     }
 }

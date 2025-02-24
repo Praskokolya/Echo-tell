@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Models\Question;
 use App\Models\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class ResponseRepository
 {

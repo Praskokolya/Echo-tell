@@ -3,10 +3,16 @@
         <nav class="nav">
             <div class="nav-container">
                 <a href="/home" class="brand">Echo tell</a>
-                <button v-if="!isDesktop"@click="toggleMenu" class="menu-toggle">☰</button>
+                <button
+                    v-if="!isDesktop"
+                    @click="toggleMenu"
+                    class="menu-toggle"
+                >
+                    ☰
+                </button>
                 <ul class="nav-menu" :class="{ active: isMenuOpen }">
                     <li>
-                        <a href="/create/question" class="nav-item"
+                        <a href="/question/create" class="nav-item"
                             >Create question</a
                         >
                     </li>
@@ -81,18 +87,19 @@ export default {
     data() {
         return {
             isDesktop: window.innerWidth >= 1024,
+            isMenuOpen: false,
             notificationCount: 0,
             notifications:
-            JSON.parse(localStorage.getItem("notifications")) || [],
+                JSON.parse(localStorage.getItem("notifications")) || [],
             showMenu: false,
-            showIndicator: localStorage.getItem('showIndicator'),
+            showIndicator: localStorage.getItem("showIndicator"),
         };
     },
     methods: {
         hideIndicator() {
-            console.log(this.showIndicator)
-            this.showIndicator = 0
-            localStorage.setItem('showIndicator', 0)
+            console.log(this.showIndicator);
+            this.showIndicator = 0;
+            localStorage.setItem("showIndicator", 0);
         },
         toggleMenu() {
             this.isMenuOpen = !this.isMenuOpen;
@@ -116,7 +123,7 @@ export default {
             }
         },
         fetchUserData() {
-            console.log(this.showIndicator)
+            console.log(this.showIndicator);
 
             axios
                 .get("/api/user/user-data")
@@ -149,14 +156,13 @@ export default {
                 window.Echo.private(`notification.` + this.userId).listen(
                     "NewInteraction",
                     (data) => {
-
                         console.log("New response received:", data);
                         this.notifications.push(...data.response);
                         this.limitNotifications();
                         this.updateLocalStorage();
 
-                        localStorage.setItem('showIndicator', 1)
-                        this.showIndicator = 1
+                        localStorage.setItem("showIndicator", 1);
+                        this.showIndicator = 1;
                         this.isNotificationVisible = true;
 
                         setTimeout(() => {

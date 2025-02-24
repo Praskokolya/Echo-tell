@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <!-- Виведення даних -->
     <div v-if="response && question" class="content">
       <div class="question-section">
         <h2 class="title">Question:</h2>

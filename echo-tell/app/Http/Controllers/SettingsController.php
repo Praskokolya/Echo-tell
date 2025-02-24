@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\StatisticMail;
 use App\Repositories\SettingsRepository;
 use App\Services\SettingsService;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class SettingsController extends Controller
 {

@@ -38,8 +38,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Pagination -->
         <div v-if="pagination.total > 1" class="pagination">
             <button
                 :disabled="pagination.current_page === 1"
@@ -90,7 +88,6 @@ export default {
                 axios
                     .delete(`api/question/${id}`)
                     .then(() => {
-                        // Видалення питання з масиву після успішного запиту
                         this.questions.data = this.questions.data.filter(
                             (question) => question.id !== id
                         );

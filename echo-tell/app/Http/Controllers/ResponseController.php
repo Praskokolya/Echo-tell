@@ -61,7 +61,7 @@ class ResponseController extends Controller
     public function createResponse(Request $request, $id)
     {
         $this->responseRepository
-            ->createResponse($request, $id);
+            ->createResponse($request->all(), $id);
     }
 
     /**

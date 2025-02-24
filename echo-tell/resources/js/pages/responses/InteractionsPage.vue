@@ -164,7 +164,6 @@ export default {
 </script>
 
 <style scoped>
-/* Фільтри кнопок */
 .filter-buttons {
     display: flex;
     justify-content: center;
@@ -194,7 +193,6 @@ export default {
     font-weight: bold;
 }
 
-/* Контейнер для інтерекцій */
 .interactions-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -202,7 +200,6 @@ export default {
     margin: 40px;
 }
 
-/* Карточки */
 .interaction-card {
     background: linear-gradient(135deg, #ffffff, #f4f7fc);
     border-radius: 18px;
@@ -240,7 +237,6 @@ export default {
     line-height: 1.8;
 }
 
-/* Футер */
 .card-footer {
     display: flex;
     justify-content: space-between;
@@ -270,7 +266,6 @@ export default {
     font-style: italic;
 }
 
-/* Пагінація */
 .pagination {
     display: flex;
     justify-content: center;
@@ -298,7 +293,6 @@ export default {
     cursor: not-allowed;
 }
 
-/* Повідомлення при відсутності інтеракцій */
 .no-interactions {
     text-align: center;
     margin-top: 20px;

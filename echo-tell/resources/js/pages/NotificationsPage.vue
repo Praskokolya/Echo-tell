@@ -105,7 +105,6 @@ export default {
     color: #888;
 }
 
-/* Pagination Styles */
 .pagination {
     display: flex;
     justify-content: space-between;

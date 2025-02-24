@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Jobs\UserStoringDataJob;
 use App\Mail\SendCodeMail;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Cache;

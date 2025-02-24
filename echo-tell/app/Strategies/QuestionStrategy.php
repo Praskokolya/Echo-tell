@@ -4,7 +4,6 @@ namespace App\Strategies;
 
 use App\Interfaces\VerificationInterface;
 use App\Models\Question;
-use App\Repositories\QuestionRepository;
 use Illuminate\Support\Facades\Auth;
 
 class QuestionStrategy implements VerificationInterface{

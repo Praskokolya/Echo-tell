@@ -1,33 +1,38 @@
 <template>
     <div class="user-messages-page">
         <h1 class="page-title">All messages from {{ senderName }} to you</h1>
-        
-        <!-- Повідомлення -->
-        <div v-for="message in messages" :key="message.id" class="message-item">
-            <div class="message-header">
-                <strong>{{ message.sender_name }}</strong> 
-                <span class="message-date">{{ new Date(message.created_at).toLocaleString() }}</span>
-            </div>
-            <div class="message-content">
-                <p>{{ message.message }}</p>
-            </div>
-        </div>
 
-        <!-- Пагінація -->
+        <a v-for="message in messages" :key="message.id" :href="message.url">
+            <div class="message-item">
+                <div class="message-header">
+                    <strong>{{ message.sender_name }}</strong>
+                    <span class="message-date">{{
+                        new Date(message.created_at).toLocaleString()
+                    }}</span>
+                </div>
+                <div class="message-content">
+                    <p>{{ message.message }}</p>
+                </div>
+            </div>
+        </a>
+
         <div class="pagination">
-            <button 
+            <button
                 v-if="pagination.prev_page_url"
-                @click="changePage(pagination.prev_page_url)" 
+                @click="changePage(pagination.prev_page_url)"
                 class="pagination-btn"
             >
                 &laquo; Previous
             </button>
-            
-            <span>Page {{ pagination.current_page }} of {{ pagination.last_page }}</span>
 
-            <button 
+            <span
+                >Page {{ pagination.current_page }} of
+                {{ pagination.last_page }}</span
+            >
+
+            <button
                 v-if="pagination.next_page_url"
-                @click="changePage(pagination.next_page_url)" 
+                @click="changePage(pagination.next_page_url)"
                 class="pagination-btn"
             >
                 Next &raquo;
@@ -38,38 +43,38 @@
 
 <script>
 export default {
-    name: 'UserMessagesPage',
+    name: "UserMessagesPage",
     data() {
         return {
             id: window.location.pathname.split("/")[2],
-            messages: [], 
-            senderName: "", 
+            messages: [],
+            senderName: "",
             pagination: {
                 current_page: 1,
                 last_page: 1,
                 next_page_url: null,
-                prev_page_url: null
-            }
+                prev_page_url: null,
+            },
         };
     },
     methods: {
-        getMessages(pageUrl = '/api/messages/' + this.id) {
+        getMessages(pageUrl = "/api/messages/" + this.id) {
             axios.get(pageUrl).then((response) => {
                 const data = response.data.data;
-                this.pagination = response.data;  // Оновлюємо дані пагінації
+                this.pagination = response.data;
                 if (data.length > 0) {
-                    this.senderName = data[0].sender_name;  
-                    this.messages = data;  
+                    this.senderName = data[0].sender_name;
+                    this.messages = data;
                 }
             });
         },
         changePage(url) {
-            this.getMessages(url); // Завантажуємо нову сторінку за URL
-        }
+            this.getMessages(url);
+        },
     },
     mounted() {
-        this.getMessages(); // Завантажуємо першу сторінку
-    }
+        this.getMessages();
+    },
 };
 </script>
 
@@ -95,6 +100,12 @@ export default {
     margin-bottom: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.message-item:hover {
+    transform: scale(1.05); 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .message-header {

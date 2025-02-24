@@ -6,7 +6,6 @@ use App\Repositories\QuestionRepository;
 use App\Strategies\MessageStrategy;
 use App\Strategies\QuestionStrategy;
 use App\Strategies\ResponseStrategy;
-use Illuminate\Support\Facades\Auth;
 
 class VerificationService
 {
