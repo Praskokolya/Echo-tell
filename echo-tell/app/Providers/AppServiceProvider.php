@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Models\Message;
+use App\Models\Question;
 use App\Models\Response;
 use App\Models\User;
 use App\Observers\MessageObserver;
+use App\Observers\QuestionObserver;
 use App\Observers\ResponseObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
@@ -26,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Question::observe(QuestionObserver::class);
         User::observe(UserObserver::class);
         Message::observe(MessageObserver::class);
         Response::observe(ResponseObserver::class);

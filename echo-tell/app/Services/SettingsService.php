@@ -10,22 +10,17 @@ class SettingsService
 {
     public function __construct(public SettingsRepository $settingsRepository) {}
 
-    /**
-     * If a parameter is not passed to the method, then the mail is sending to all users
-     *
-     * @param [type] $user
-     * @return void
-     */
-    public function startSendingMail($user = null)
+    public function sendMails()
     {
         $usersForMailing = $this->settingsRepository->getUsersForMail();
-        
-        if($user){
-            $usersForMailing = [$user];
-        }
 
         foreach ($usersForMailing as $user) {
             Mail::to($user->email)->send(new StatisticMail($this->settingsRepository->getTodaysStatistics($user)));
         };
+    }
+
+    public function sendMailToUser($user)
+    {
+        Mail::to($user->email)->send(new StatisticMail($this->settingsRepository->getTodaysStatistics($user)));
     }
 }

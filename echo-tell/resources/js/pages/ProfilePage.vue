@@ -48,7 +48,7 @@ export default {
     },
     methods: {
         getData() {
-            axios.get("/api/user/" + this.name).then((response) => {
+            axios.get("/api/profile/" + this.name).then((response) => {
                 this.user = response.data.data;
                 this.id = this.user.id;
             });

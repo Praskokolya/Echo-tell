@@ -4,32 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\NotificationsResource;
 use App\Repositories\NotificationRepository;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class NotificationController extends Controller
 {
-    /**
-     * NotificationController constructor.
-     *
-     * @param NotificationRepository $notificationRepository
-     */
-    public function __construct(public NotificationRepository $notificationRepository) {}
+    
+    public function __construct(private NotificationRepository $notificationRepository) {}
 
-    /**
-     * Display the notifications page.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function index()
+    public function index(): View
     {
         return view('notifications');
     }
 
-    /**
-     * Retrieve all notifications.
-     *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-     */
-    public function returnNotifications()
+    public function notifications(): AnonymousResourceCollection
     {
         return NotificationsResource::collection(
             $this->notificationRepository->getAll()

@@ -82,8 +82,9 @@ export default {
                 axios.post(`/api/response/${this.id}`, data)
                     .then(() => {
                         console.log(data);
-                        window.location.href = `/user/interactions`;
                     });
+                    window.location.href = `/user/interactions`;
+
             }
         },
         getQuestionData() {

@@ -4,93 +4,52 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\MessagesResource;
 use App\Repositories\MessageRepository;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class MessagesController extends Controller
 {
-    /**
-     * MessagesController constructor.
-     *
-     * @param MessageRepository $messageRepository
-     */
     public function __construct(public MessageRepository $messageRepository) {}
 
-    /**
-     * Display the messages page.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function index()
+    public function index(): View
     {
         return view('messages.message');
     }
 
-    /**
-     * Display the user's messages page.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function messagesFromUser()
+    public function messagesFromUser(): View
     {
         return view('messages.user-messages');
     }
 
-    /**
-     * Retrieve messages from a specific user.
-     *
-     * @param string $id
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function returnMessagesFromUser(string $id)
+    public function userMessages(string $id): LengthAwarePaginator
     {
         return $this->messageRepository
             ->getMessagesFromUser($id);
     }
 
-    /**
-     * Retrieve all messages.
-     *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-     */
-    public function returnMessages()
+    public function messages(): AnonymousResourceCollection
     {
         return MessagesResource::collection(
             $this->messageRepository->getAll()
         );
     }
 
-    /**
-     * Retrieve a single message by its ID.
-     *
-     * @param string $id
-     * @return MessagesResource
-     */
-    public function returnMessage(string $id)
+    public function show(string $id): MessagesResource
     {
         return new MessagesResource(
-            $this->messageRepository->getMessage($id)
+            $this->messageRepository->get($id)
         );
     }
 
-    /**
-     * Create a new message.
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function createMessage(Request $request)
+    public function store(Request $request)
     {
         $this->messageRepository
-            ->createMessage($request->all());
+            ->create($request->all());
     }
 
-    /**
-     * Delete a message by its ID.
-     *
-     * @param int $id
-     * @return void
-     */
-    public function deleteMessage($id)
+    public function destroy(string $id)
     {
         $this->messageRepository
             ->delete($id);

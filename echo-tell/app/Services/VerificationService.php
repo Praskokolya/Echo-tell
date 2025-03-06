@@ -14,13 +14,7 @@ class VerificationService
        
     }
     
-    /**
-     * @param integer $id ID of content
-     * @param string $typeOfContent type of conent (message or question)
-     * @return mixed
-     */
-
-    public function checkIfUserAuthor(mixed $id, string $typeOfContent){
+    public function checkIfUserAuthor(mixed $id, string $typeOfContent): bool{
         $strategy = match ($typeOfContent){
             'question' => new QuestionStrategy,
             'message' => new MessageStrategy,

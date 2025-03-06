@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuthRequest;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Redirect;
 
 class AuthController extends Controller
 {
@@ -25,44 +28,22 @@ class AuthController extends Controller
         $this->userService = $userService;
     }
 
-    /**
-     * Display the authentication index page.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function index()
+    public function index(): View
     {
         return view("auth.index");
     }
 
-    /**
-     * Display the registration page.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function registation()
+    public function registation(): View
     {
         return view('auth.registation');
     }
 
-    /**
-     * Store a new user.
-     *
-     * @param AuthRequest $request
-     * @return void
-     */
     public function store(AuthRequest $request)
     {
         $this->userService->storeData($request->all());
     }
 
-    /**
-     * Verify the provided verification code.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Contracts\View\View
-     */
-    public function passVerificationCode(Request $request)
+    public function passVerificationCode(Request $request): View|RedirectResponse
     {
         if ($this->userService->compareCode($request->code)) {
             return view('welcome');
@@ -71,13 +52,7 @@ class AuthController extends Controller
         }
     }
 
-    /**
-     * Authenticate the user and return an access token.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $accessToken = $this->userRepository->login($request->all());
 

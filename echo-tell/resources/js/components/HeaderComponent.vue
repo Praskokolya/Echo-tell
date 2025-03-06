@@ -45,14 +45,9 @@
                                     :key="index"
                                     class="notification-card"
                                 >
-                                    <a :href="notification.url">
-                                        <div class="notification-header">
-                                            <strong>{{
-                                                notification.title
-                                            }}</strong>
-                                        </div>
+                                    <a :href="notification.data.url">
                                         <div class="notification-body">
-                                            {{ notification.message }}
+                                            {{ notification.data.message }}
                                         </div>
                                     </a>
                                 </li>
@@ -97,7 +92,6 @@ export default {
     },
     methods: {
         hideIndicator() {
-            console.log(this.showIndicator);
             this.showIndicator = 0;
             localStorage.setItem("showIndicator", 0);
         },
@@ -124,9 +118,8 @@ export default {
         },
         fetchUserData() {
             console.log(this.showIndicator);
-
             axios
-                .get("/api/user/user-data")
+                .get("/api/user")
                 .then((response) => {
                     this.userId = response.data.id;
                     this.connectToChannel();
@@ -315,7 +308,7 @@ export default {
     margin-top: 20px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
     .nav-menu {
         display: none;
         flex-direction: column;

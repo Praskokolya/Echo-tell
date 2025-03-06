@@ -14,34 +14,22 @@ class SettingsController extends Controller
      *
      * @param SettingsRepository $settingsRepository
      */
-    public function __construct(public SettingsRepository $settingsRepository, public SettingsService $settingsService) {}
+    public function __construct(private SettingsRepository $settingsRepository, private SettingsService $settingsService) {}
 
-    /**
-     * Change the mail notifications settings.
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function changeMailNotifications(Request $request)
+    public function changeMailNotifications(Request $request): void
     {
         $this->settingsRepository
             ->updateMailNotifications($request->all());
     }
 
-    /**
-     * Change the daily mail notifications settings.
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function changeDailyMails(Request $request)
+    public function changeDailyMails(Request $request): void
     {
         $this->settingsRepository
             ->updateDailyMails($request->all());
     }
 
-    public function sendDailyStatistics()
+    public function sendDailyStatistics(): void
     {
-        $this->settingsService->startSendingMail(Auth::user());
+        $this->settingsService->sendMailToUser(Auth::user());
     }
 }

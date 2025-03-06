@@ -50,8 +50,8 @@ export default {
                 axios
                     .post("/api/question", { question: this.question })
                     .then((response) => {
-                        window.location.href = response.data.question_url;
                     });
+                    
             }
         },
     },

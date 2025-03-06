@@ -5,85 +5,52 @@ namespace App\Http\Controllers;
 use App\Http\Resources\QuestionResource;
 use App\Http\Resources\QuestionsResource;
 use App\Repositories\QuestionRepository;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class QuestionController extends Controller
 {
-    /**
-     * QuestionController constructor.
-     *
-     * @param QuestionRepository $questionRepository
-     */
+
     public function __construct(
-        public QuestionRepository $questionRepository,
+        private QuestionRepository $questionRepository,
     ) {}
 
-    /**
-     * Show the page for creating a question.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function createQuestion()
+    public function create(): View
     {
         return view('question.create-question');
     }
 
-    /**
-     * Show the main question page.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function index()
+    public function index(): View
     {
         return view('question');
     }
 
-    /**
-     * Show the page displaying all questions.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function questions()
+    public function questions(): View
     {
         return view('question.questions');
     }
 
-    /**
-     * Create a new question and return the question URL.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function create(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $question = $this->questionRepository
-            ->createQuestion($request->all());
+            ->create($request->all());
 
         return response()->json([
             'question_url' => $question->url,
         ]);
     }
 
-    /**
-     * Return data for a specific question by its ID.
-     *
-     * @param int $id
-     * @return QuestionResource
-     */
-    public function returnData($id)
+    public function show(int $id): QuestionResource
     {
         $question = $this->questionRepository
-            ->getQuestion($id);
+            ->get($id);
 
         return new QuestionResource($question);
     }
 
-    /**
-     * Return all questions.
-     *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-     */
-    public function returnQuestions()
+    public function returnQuestions(): AnonymousResourceCollection
     {
         return QuestionsResource::collection(
             $this->questionRepository
@@ -91,28 +58,16 @@ class QuestionController extends Controller
         );
     }
 
-    /**
-     * Delete a question by its ID.
-     *
-     * @param int $id
-     * @return void
-     */
-    public function deleteQuestion(int $id)
+    public function destroy(int $id)
     {
         $this->questionRepository
             ->delete($id);
     }
 
-    /**
-     * Return all responses for a specific question by its ID.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function returnQuestionResponses($id)
+    public function returnResponses(int $id): JsonResponse
     {
         $question = $this->questionRepository
-            ->getQuestion($id);
+            ->get($id);
         
         $responses = $this->questionRepository
             ->getQuestionResponses($question);

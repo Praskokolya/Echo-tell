@@ -4,38 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ProfileResource;
 use App\Repositories\ProfileRepository;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-    /**
-     * ProfileController constructor.
-     *
-     * @param ProfileRepository $profileRepository
-     */
-    public function __construct(public ProfileRepository $profileRepository)
-    {
-    }
+    public function __construct(private ProfileRepository $profileRepository) {}
 
-    /**
-     * Display the profile page.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function index()
+    public function index(): View
     {
         return view('profile');
     }
 
-    /**
-     * Retrieve a user's profile by their name.
-     *
-     * @param string $name
-     * @return ProfileResource
-     */
-    public function returnUser($name)
+    public function show(string $name): ProfileResource
     {
         return new ProfileResource(
-            $this->profileRepository->getData($name)
+            $this->profileRepository->get($name)
         );
     }
 }

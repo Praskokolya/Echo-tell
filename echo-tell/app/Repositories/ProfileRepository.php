@@ -8,7 +8,7 @@ class ProfileRepository
 {
     public function __construct(public User $user) {}
 
-    public function getData($name)
+    public function get($name)
     {
         return $this->user
             ->where('name', $name)

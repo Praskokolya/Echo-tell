@@ -8,23 +8,11 @@ use Illuminate\Console\Command;
 class CreateService extends Command
 {
     const TEMPLATE_PATH = 'Console/FileTemplates/ServiceTemplate';
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
+
     protected $signature = 'make:service {name}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Command description';
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
         $name = $this->argument('name');

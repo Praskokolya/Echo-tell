@@ -10,29 +10,13 @@ class NewResponseNotification extends Notification
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @param object $responseData
-     */
     public function __construct(public $responseData) {}
 
-    /**
-     * Get the URL of the response.
-     *
-     * @return string
-     */
     private function getUrl()
     {
         return $this->responseData->question->url . "/response/" . $this->responseData->id;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param object $notifiable
-     * @return array<int, string>
-     */
     public function via(object $notifiable): array
     {
         // If email notifications are enabled, send via database and mail
@@ -43,11 +27,6 @@ class NewResponseNotification extends Notification
         return ['database'];
     }
 
-    /**
-     * Get the database representation of the notification.
-     *
-     * @return array
-     */
     public function toDatabase()
     {
         return [
@@ -56,12 +35,6 @@ class NewResponseNotification extends Notification
         ];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param object $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage|null
-     */
     public function toMail($notifiable): ?MailMessage
     {
         // Send the email notification only if email notifications are enabled

@@ -6,7 +6,11 @@ use App\Http\Resources\QuestionResource;
 use App\Http\Resources\ResponseResource;
 use App\Repositories\MessageRepository;
 use App\Repositories\ResponseRepository;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class ResponseController extends Controller
 {
@@ -21,55 +25,28 @@ class ResponseController extends Controller
         public MessageRepository $messageRepository
     ) {}
 
-    /**
-     * Show the responses page.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function index()
+    public function index(): View
     {
         return view('responses.responses');
     }
 
-    /**
-     * Show a single response.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function showResponse()
+    public function showResponse(): View
     {
         return view('responses.response');
     }
 
-    /**
-     * Show the responses for a question.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function showQuestionResponses()
+    public function showQuestionResponses(): View
     {
         return view('responses.question-responses');
     }
 
-    /**
-     * Create a new response to a question.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return void
-     */
-    public function createResponse(Request $request, $id)
+    public function store(Request $request,int $id,): void
     {
         $this->responseRepository
             ->createResponse($request->all(), $id);
     }
 
-    /**
-     * Return all responses.
-     *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-     */
-    public function returnResponses()
+    public function responses(): AnonymousResourceCollection
     {
         return ResponseResource::collection(
             $this->responseRepository
@@ -77,25 +54,13 @@ class ResponseController extends Controller
         );
     }
 
-    /**
-     * Delete a response by its ID.
-     *
-     * @param int $id
-     * @return void
-     */
-    public function deleteResponse($id)
+    public function destroy($id,): void
     {
         $this->responseRepository
             ->delete($id);
     }
 
-    /**
-     * Return a specific response and its associated question.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function returnResponse($id)
+    public function show($id,): JsonResponse
     {
         $responseAndQuestion = $this->responseRepository
             ->getResponse($id);

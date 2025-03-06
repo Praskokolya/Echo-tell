@@ -8,24 +8,11 @@ use Illuminate\Console\Command;
 class CreateRepository extends Command
 {
     const TEMPLATE_PATH = 'Console/FileTemplates/RepositoryTemplate';
-
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
+    
     protected $signature = 'make:repository {name}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Creating new repository in /app/Repositories';
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
         $name = $this->argument('name');

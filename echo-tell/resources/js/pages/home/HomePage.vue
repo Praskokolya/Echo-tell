@@ -111,7 +111,7 @@ export default {
     methods: {
         getData() {
             axios
-                .get("/api/user/user-data")
+                .get("/api/user")
                 .then((response) => {
                     this.user = response.data;
                     this.notificationsEnabled = Boolean(
@@ -146,15 +146,10 @@ export default {
                 });
         },
         logout() {
-            isConfirmed = confirm(
-                "Are you sure you want logout from your account?"
-            );
-            if (isConfirmed) {
-                axios.post("logout").then(() => {
-                    window.location.href = "/auth";
-                    localStorage.removeItem("access_token");
-                });
-            }
+            axios.post("logout").then(() => {
+                window.location.href = "/auth/login";
+                localStorage.removeItem("access_token");
+            });
         },
         sendMail() {
             axios

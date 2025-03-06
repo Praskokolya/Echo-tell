@@ -28,7 +28,7 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::controller(QuestionController::class)->group(function () {
     Route::get('questions', 'questions');
-    Route::get('question/create', 'createQuestion');
+    Route::get('question/create', 'create');
     Route::get('question/{id}/{slug}', 'index')->middleware([EnsureUserIsAuthor::class . ':question']);
 });
 
@@ -41,7 +41,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('user/interactions', [ResponseController::class, 'index']);
 
     Route::get('profile/{user_name}', [ProfileController::class, 'index']);
-    Route::get('message/{id}', [MessagesController::class, 'index'])->middleware([EnsureUserIsAuthor::class. ':message'])->name('message');
+    Route::get('message/{id}', [MessagesController::class, 'index'])->middleware([EnsureUserIsAuthor::class. ':message'])->name('sho');
     Route::get('messages/{id}', [MessagesController::class, 'messagesFromUser']);
     Route::post('logout', function(){
         Auth::logout();
