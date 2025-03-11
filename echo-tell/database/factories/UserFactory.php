@@ -24,9 +24,9 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->safeEmail(),
-            'password' => bcrypt('123321123'),
+            'name' => 'John HoorHo',
+            'email' => 'nikolay.prasko@gmail.com',
+            'password' => 123321,
         ];
     }
 }

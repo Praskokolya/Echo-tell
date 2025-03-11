@@ -9,7 +9,9 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -68,5 +70,16 @@ class AuthController extends Controller
                 'status' => 401,
             ]);  
         }
+    }
+
+    public function googleRedirect(){
+        return Socialite::driver('google')
+            ->with(['prompt' => 'select_account'])
+            ->redirect();
+    }
+
+    public function googleCallback(){
+        $authToken = $this->userRepository->loginWithGoogle(Socialite::driver('google')->user());
+        return view('auth.index')->with('authToken', $authToken);
     }
 }

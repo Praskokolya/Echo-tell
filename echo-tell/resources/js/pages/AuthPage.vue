@@ -46,7 +46,7 @@
             <div class="social-login">
                 <div class="social-buttons">
                     <span class="social-btn google" @click="signInWithGoogle">
-                        <i class="fab fa-google"></i> <a href="/">Google</a>
+                        <i class="fab fa-google"></i><span>Google</span>
                     </span>
                     <span
                         class="social-btn facebook"
@@ -76,13 +76,19 @@ export default {
             axios.post("/auth/login", this.form).then((response) => {
                 if(response.data.access_token){
                     localStorage.setItem("access_token", response.data.access_token);
-                    window.location.href = "/";
-                } 
+                    window.location.href = "/home";
+                }
             });
         },
-        signInWithGoogle() {},
+        async signInWithGoogle() {
+            window.location.href = "/auth/redirect";
+        },
         signInWithFacebook() {},
     },
+    mounted(){
+        this.authToken = window.authToken
+        console.log(this.authToken)
+    }
 };
 </script>
 

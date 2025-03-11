@@ -32,4 +32,18 @@ class UserRepository
             return false;
         }
     }
+    public function loginWithGoogle($googleData){
+        $user = $this->user->where('google_id', $googleData->id)->first();
+        if($user){
+            Auth::login($user);
+            return $user->createToken('authToken')->plainTextToken;
+        };
+        if(!$user){
+            $this->user->create([
+                'name' => $googleData->name,
+                'email' => $googleData->email,
+                'google_id' => $googleData->id
+            ]);
+        };
+    }
 }

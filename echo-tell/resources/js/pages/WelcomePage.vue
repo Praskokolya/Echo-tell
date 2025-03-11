@@ -25,7 +25,7 @@
             </div>
 
             <div class="footer text-center">
-                <p>&copy; 2024 Echo Tell. All rights reserved.</p>
+                <p>&copy; 2025 Echo Tell. All rights reserved.</p>
                 <p>Made with ❤️ by Echo Tell Team</p>
             </div>
         </div>

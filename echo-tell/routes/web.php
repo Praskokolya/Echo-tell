@@ -10,10 +10,18 @@ use App\Http\Controllers\ResponseController;
 use App\Http\Middleware\EnsureUserIsAuthor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::prefix('auth')->group(function () {
+    Route::get('redirect', [AuthController::class, 'googleRedirect']);
+    Route::get('callback', [AuthController::class, 'googleCallback']);
+});
+
+
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('auth/login', 'index');
