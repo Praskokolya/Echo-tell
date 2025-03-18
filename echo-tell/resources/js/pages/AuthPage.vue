@@ -74,8 +74,11 @@ export default {
     methods: {
         logIn() {
             axios.post("/auth/login", this.form).then((response) => {
-                if(response.data.access_token){
-                    localStorage.setItem("access_token", response.data.access_token);
+                if (response.data.access_token) {
+                    localStorage.setItem(
+                        "access_token",
+                        response.data.access_token
+                    );
                     window.location.href = "/home";
                 }
             });
@@ -85,10 +88,16 @@ export default {
         },
         signInWithFacebook() {},
     },
-    mounted(){
-        this.authToken = window.authToken
-        console.log(this.authToken)
-    }
+    mounted() {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        if (urlParams.has("state") && urlParams.has("code")) {
+            window.location.href = "/home";
+        }
+        
+        this.authToken = window.authToken;
+        console.log(this.authToken);
+    },
 };
 </script>
 
