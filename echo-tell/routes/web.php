@@ -21,8 +21,6 @@ Route::prefix('auth')->group(function () {
     Route::get('callback', [AuthController::class, 'googleCallback']);
 });
 
-
-
 Route::controller(AuthController::class)->group(function () {
     Route::get('auth/login', 'index');
     Route::get('auth/registration', 'registation')->name('registration');
